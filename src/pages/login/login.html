@@ -1,0 +1,38 @@
+<ion-content class="contentMain" padding>
+  <ion-card>
+    <h1 style="color: #000000aa;text-align: center; margin: 10px"> Login </h1>
+
+    <ion-list>
+      <ion-item>
+         <ion-label color="primary" stacked>Email</ion-label>
+         <ion-input type="email" placeholder="Email"></ion-input>
+       </ion-item>
+       <ion-item>
+          <ion-label color="primary" stacked>Senha</ion-label>
+          <ion-input type="password" placeholder="Senha"></ion-input>
+        </ion-item>
+
+    </ion-list>
+    <button style="float:right" ion-button icon-right round outline color="primary">
+      Entrar
+      <ion-icon ios="ios-unlock" md="md-unlock"></ion-icon>
+
+    </button>
+  </ion-card>
+
+
+  <p style="text-align: center; color: #ffffffcc"> Ou se autentique com </p>
+
+  <div style="display: flex;align-items: center;  justify-content: center;">
+
+    <button style="margin:0px 10px 0px 10px" color="google" ion-button round icon-only (click)="loginWithGoogle()">
+      <ion-icon name="logo-google"></ion-icon>
+    </button>
+
+    <button style="margin:0px 10px 0px 10px" color="facebook" ion-button icon-only (click)="loginWithGoogle()">
+      <ion-icon  name="logo-facebook"></ion-icon>
+    </button>
+  </div>
+
+
+</ion-content>
