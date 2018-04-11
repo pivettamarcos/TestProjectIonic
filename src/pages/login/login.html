@@ -1,37 +1,57 @@
 <ion-content class="contentMain" padding>
-  <ion-card>
-    <h1 style="color: #000000aa;text-align: center; margin: 10px"> Login </h1>
+  <ion-row class="logo-row">
+    <ion-col></ion-col>
+    <ion-col class="imgCol" width-67>
+      <img src="../assets/imgs/bookLogo2.png"/>
+    </ion-col>
+    <ion-col></ion-col>
+  </ion-row>
+  <div class="loginBox">
 
-    <ion-list>
-      <ion-item>
-         <ion-label color="primary" stacked>Email</ion-label>
-         <ion-input type="email" placeholder="Email"></ion-input>
-       </ion-item>
-       <ion-item>
-          <ion-label color="primary" stacked>Senha</ion-label>
-          <ion-input type="password" placeholder="Senha"></ion-input>
-        </ion-item>
+    <ion-card>
+      <ion-card-content>
+        <form (ngSubmit)="loginRegular(f)" #f="ngForm">
+          <ion-row style="border-bottom: 1px solid #cccccc">
+            <ion-col>
+              <ion-list inset>
 
-    </ion-list>
-    <button style="float:right" ion-button icon-right round outline color="primary">
-      Entrar
-      <ion-icon ios="ios-unlock" md="md-unlock"></ion-icon>
+                <ion-item>
+                  <ion-input type="email" email [(ngModel)]="email" placeholder="Email" name="email" required></ion-input>
+                </ion-item>
 
-    </button>
-  </ion-card>
+                <ion-item>
+                  <ion-input type="password" placeholder="Senha" name="password" ngModel required></ion-input>
+                </ion-item>
 
+              </ion-list>
+            </ion-col>
+          </ion-row>
 
-  <p style="text-align: center; color: #ffffffcc"> Ou se autentique com </p>
+          <ion-row>
+            <ion-col class="signup-col">
+              <button ion-button class="submit-btn" full type="submit" [disabled]="!f.valid">Login</button>
+              <button ion-button class="register-btn" block clear>Criar nova conta</button>
+            </ion-col>
+          </ion-row>
 
-  <div style="display: flex;align-items: center;  justify-content: center;">
+      </form>
+      </ion-card-content>
+    </ion-card>
 
-    <button style="margin:0px 10px 0px 10px" color="google" ion-button round icon-only (click)="loginWithGoogle()">
-      <ion-icon name="logo-google"></ion-icon>
-    </button>
+    <ion-row>
+      <ion-col  style="display:block; margin: 0 auto" class="signup-col" col-auto>
+        <p style="color:#ffffffbb"> Ou autentique-se com </p>
+        <div style="display:flex; justify-content: center;">
+          <button style="background-color: #ffffffbb; color:#333388ff" ion-button icon-only>
+            <ion-icon name="logo-facebook"></ion-icon>
+          </button>
 
-    <button style="margin:0px 10px 0px 10px" color="facebook" ion-button icon-only (click)="loginWithGoogle()">
-      <ion-icon  name="logo-facebook"></ion-icon>
-    </button>
+          <button style="background-color: #ffffffbb; color:#333388ff" ion-button round icon-only>
+            <ion-icon name="logo-google"></ion-icon>
+          </button>
+        </div>
+      </ion-col>
+    </ion-row>
   </div>
 
 

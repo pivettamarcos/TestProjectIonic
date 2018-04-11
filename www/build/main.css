@@ -33360,3 +33360,17 @@ ion-navbar.toolbar {
 page-login #orText {
   text-align: center;
 }
+
+page-login .imgCol img {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 40px;
+}
+
+page-login .loginBox ion-card {
+  display: block;
+  margin: 0 auto;
+  max-width: 400px;
+}
