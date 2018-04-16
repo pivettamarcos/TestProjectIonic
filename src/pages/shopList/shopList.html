@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-navbar>
+
+        <ion-title>
+          Lista de lojas
+        </ion-title>
+
+        <ion-buttons hideWhen="android, core" end>
+          <button ion-button icon-only (click)="addShop()">
+            <ion-icon ios="ios-add" md="md-add"></ion-icon>
+          </button>
+        </ion-buttons>
+
+    </ion-navbar>
+</ion-header>
+
+
+
+<ion-content  class="contentMain">
+  <ion-searchbar
+    [(ngModel)]="myInput"
+    [showCancelButton]="shouldShowCancel"
+    (ionInput)="onInput($event)"
+    (ionCancel)="onCancel($event)">
+  </ion-searchbar>
+
+  <ion-list>
+    <ion-item>
+      <h2>Saraiva</h2>
+      <p>Rua 3 de Setembro</p>
+      <button ion-button clear item-end>Ver</button>
+    </ion-item>
+    <ion-item>
+      <h2>Amazon</h2>
+      <p>Hayao Miyazaki • 1988</p>
+      <button ion-button clear item-end>Ver</button>
+    </ion-item>
+    <ion-item>
+      <h2>My Neighbor Totoro</h2>
+      <p>Hayao Miyazaki • 1988</p>
+      <button ion-button clear item-end>Ver</button>
+    </ion-item>
+  </ion-list>
+
+  <button showWhen="core" style="color:black;background-color: #ffffffcc; display: block; margin: 0 auto" ion-button (click)="addShop()">
+      Adicionar loja
+  </button>
+
+  <button hideWhen="ios, core" style="background-color: #ffffffcc;position:absolute; right: 10px;bottom: 10px" ion-fab (click)="addShop()">
+      <ion-icon style="color: black" md="md-add"></ion-icon>
+  </button>
+
+</ion-content>

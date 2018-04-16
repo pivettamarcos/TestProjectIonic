@@ -8,13 +8,19 @@ import { GooglePlus } from '@ionic-native/google-plus';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
+import { ShopListPage } from '../pages/shopList/shopList';
+import { ShopRegisterPage } from '../pages/shopRegister/shopRegister';
+
+
 
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    LoginPage
+    LoginPage,
+    ShopListPage,
+    ShopRegisterPage
   ],
   imports: [
     BrowserModule,
@@ -24,7 +30,9 @@ import { LoginPage } from '../pages/login/login';
   entryComponents: [
     MyApp,
     HomePage,
-    LoginPage
+    LoginPage,
+    ShopListPage,
+    ShopRegisterPage
   ],
   providers: [
     StatusBar,

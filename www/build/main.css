@@ -33357,6 +33357,24 @@ ion-navbar.toolbar {
   background-size: cover;
 }
 
+ion-item {
+  background-color: #ffffffcc !important;
+}
+
+ion-list {
+  display: block;
+  margin: 0 auto !important;
+  padding: 5px;
+  max-width: 800px;
+}
+
+ion-searchbar {
+  display: block;
+  margin: 0 auto !important;
+  padding: 5px;
+  max-width: 800px;
+}
+
 page-login #orText {
   text-align: center;
 }

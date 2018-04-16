@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { GooglePlus } from '@ionic-native/google-plus';
 
 import {HomePage} from "../home/home"
+import {ShopListPage} from "../shopList/shopList"
 
 
 @Component({
@@ -24,14 +25,12 @@ export class LoginPage {
   }*/
 
   onLogin(){
-      this.navCtrl.push(HomePage)
+      this.navCtrl.push(ShopListPage)
   }
 
-  loginRegular(f:ngForm){
-
-      console.log(f.form.controls.password.valid);
-
-      /*if(value.email == "admin" && value.password=="admin"){
+  loginRegular(){
+    this.onLogin();
+    /*  if(value.email == "admin" && value.password=="admin"){
           console.log(value);
           this.onLogin();
       }*/
