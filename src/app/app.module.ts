@@ -14,6 +14,8 @@ import {LivroPage} from "../pages/livro/livro";
 import {ListaLivrosPage} from "../pages/lista-livros/lista-livros";
 import {LivroService} from "../services/livros";
 import {TabsPage} from "../pages/tabs/tabs";
+import {ShopService} from "../services/shops";
+import {LivroRegisterPage} from "../pages/livro-register/livro-register";
 
 
 @NgModule({
@@ -24,6 +26,7 @@ import {TabsPage} from "../pages/tabs/tabs";
     ShopListPage,
     ShopRegisterPage,
     LivroPage,
+    LivroRegisterPage,
     ListaLivrosPage,
     TabsPage
   ],
@@ -39,6 +42,7 @@ import {TabsPage} from "../pages/tabs/tabs";
     ShopListPage,
     ShopRegisterPage,
     LivroPage,
+    LivroRegisterPage,
     ListaLivrosPage,
     TabsPage
   ],
@@ -47,7 +51,8 @@ import {TabsPage} from "../pages/tabs/tabs";
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     GooglePlus,
-    LivroService
+    LivroService,
+    ShopService
   ]
 })
 export class AppModule {}

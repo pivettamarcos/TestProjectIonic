@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import {ModalController, NavController, NavParams} from 'ionic-angular';
 import {Livro} from "../../data/livroInterface";
 import {LivroService} from "../../services/livros";
 import {LivroPage} from "../livro/livro";
 import livros from "../../data/livros";
+import {ShopRegisterPage} from "../shopRegister/shopRegister";
+import {LivroRegisterPage} from '../livro-register/livro-register';
 
 @Component({
   selector: 'page-lista-livros',
@@ -15,6 +17,7 @@ export class ListaLivrosPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public modalCtrl: ModalController,
     private livrosService: LivroService) {
   }
 
@@ -22,11 +25,16 @@ export class ListaLivrosPage {
     this.livros = this.livrosService.getAllLivros();
   }
 
-  onVerMais(id: string) {
+  onVerMais(id: number) {
     this.navCtrl.push(LivroPage,this.livrosService.getLivro(id));
   }
 
-  addLivro() {
+  deleteLivro(id:number){
+       this.livrosService.deleteLivro(id);
+  }
 
+  addLivro() {
+    let profileModal = this.modalCtrl.create(LivroRegisterPage, { userId: 8675309 });
+    profileModal.present();
   }
 }

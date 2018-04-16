@@ -20,8 +20,16 @@ export class LivroService{
 
   }
 
+  deleteLivro(id){
+      for(var i = 0; i < this.livros.length; i++){
+         if(this.livros[i].id == id)
+            this.livros.splice(i,1);
+      }
+  }
+
   getProximoId(){
-    return Number(livros[livros.length-1].id+1).toString();
+
+    return livros[livros.length-1].id+1;
   }
 
 }

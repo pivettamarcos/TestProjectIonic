@@ -33394,6 +33394,10 @@ page-lista-livros .button-add-android {
   bottom: 10px;
 }
 
+page-lista-livros .buttonsCol ion-icon {
+  font-size: 2em;
+}
+
 page-login #orText {
   text-align: center;
 }

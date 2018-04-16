@@ -27,21 +27,29 @@
   <ion-list>
 
     <ion-item *ngFor="let livro of livros">
-      <h2> {{livro.titulo}}</h2>
-      <p>{{livro.autor}}</p>
+      <ion-row>
+        <ion-col>
+          <h2> {{livro.titulo}}</h2>
+          <p>{{livro.autor}}</p>
+        </ion-col>
 
-          <button
-            ion-button
-            clear
-            small
-            item-end
-            (click)="onVerMais(livro.id)"> Ver</button>
+        <ion-col class="buttonsCol" (click)="deleteLivro(livro.id)">
+          <ion-buttons end>
+            <button clear ion-button>
+              <ion-icon name="trash"></ion-icon>
+            </button>
+            <button ion-button clear small item-end (click)="onVerMais(livro.id)">
+              <ion-icon name="eye"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
     </ion-item>
 
   </ion-list>
 
 
-  <button showWhen="core" class="button-add-core centralized" ion-button (click)="addShop()">
+  <button showWhen="core" class="button-add-core centralized" ion-button (click)="addLivro()">
     Adicionar Livro
   </button>
 
