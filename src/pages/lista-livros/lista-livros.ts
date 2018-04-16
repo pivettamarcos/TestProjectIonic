@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import {Livro} from "../../data/livroInterface";
 import {LivroService} from "../../services/livros";
 import {LivroPage} from "../livro/livro";
+import livros from "../../data/livros";
 
 @Component({
   selector: 'page-lista-livros',
@@ -23,5 +24,9 @@ export class ListaLivrosPage {
 
   onVerMais(id: string) {
     this.navCtrl.push(LivroPage,this.livrosService.getLivro(id));
+  }
+
+  addLivro() {
+
   }
 }

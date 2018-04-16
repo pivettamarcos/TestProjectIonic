@@ -33364,7 +33364,7 @@ ion-item {
 ion-list {
   display: block;
   margin: 0 auto !important;
-  padding: 5px;
+  padding: 0;
   max-width: 800px;
 }
 
@@ -33373,6 +33373,25 @@ ion-searchbar {
   margin: 0 auto !important;
   padding: 5px;
   max-width: 800px;
+}
+
+.centralized {
+  display: block;
+  margin: 0 auto;
+}
+
+page-lista-livros .button-add-core {
+  color: black;
+  background-color: #ffffffcc;
+  display: block;
+  margin: 8px auto 0;
+}
+
+page-lista-livros .button-add-android {
+  background-color: #ffffffcc;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
 }
 
 page-login #orText {
@@ -33391,4 +33410,18 @@ page-login .loginBox ion-card {
   display: block;
   margin: 0 auto;
   max-width: 400px;
+}
+
+page-shopList .button-add-core {
+  color: black;
+  background-color: #ffffffcc;
+  display: block;
+  margin: 8px auto 0;
+}
+
+page-shopList .button-add-android {
+  background-color: #ffffffcc;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
 }

@@ -14,4 +14,14 @@ export class LivroService{
 
   getAllLivros(){return this.livros};
 
+  addLivro(livro: Livro){
+
+    livros.push(livro);
+
+  }
+
+  getProximoId(){
+    return Number(livros[livros.length-1].id+1).toString();
+  }
+
 }

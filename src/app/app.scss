@@ -25,9 +25,9 @@ ion-item{
 }
 
 ion-list{
-  display:block;
+  display: block;
   margin: 0 auto !important;
-  padding: 5px;
+  padding: 0;
   max-width: 800px;
 }
 
@@ -36,4 +36,9 @@ ion-searchbar{
   margin: 0 auto !important;
   padding: 5px;
   max-width: 800px;
+}
+
+.centralized{
+  display: block;
+  margin: 0 auto;
 }
