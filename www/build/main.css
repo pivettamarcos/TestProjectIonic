@@ -33357,8 +33357,22 @@ ion-navbar.toolbar {
   background-size: cover;
 }
 
-page-lista-livros .cardLivro {
-  max-width: 400px;
+ion-item {
+  background-color: #ffffffcc !important;
+}
+
+ion-list {
+  display: block;
+  margin: 0 auto !important;
+  padding: 5px;
+  max-width: 800px;
+}
+
+ion-searchbar {
+  display: block;
+  margin: 0 auto !important;
+  padding: 5px;
+  max-width: 800px;
 }
 
 page-login #orText {

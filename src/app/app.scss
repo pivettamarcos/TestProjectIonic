@@ -19,3 +19,21 @@
     background: url('https://farm5.static.flickr.com/4023/4412224015_dbe31a4ae4_b.jpg') no-repeat center center fixed;
     background-size: cover;
 }
+
+ion-item{
+    background-color: #ffffffcc !important;
+}
+
+ion-list{
+  display:block;
+  margin: 0 auto !important;
+  padding: 5px;
+  max-width: 800px;
+}
+
+ion-searchbar{
+  display:block;
+  margin: 0 auto !important;
+  padding: 5px;
+  max-width: 800px;
+}

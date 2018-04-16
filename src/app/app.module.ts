@@ -8,18 +8,13 @@ import { GooglePlus } from '@ionic-native/google-plus';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
-import {ListaLivrosPage} from "../pages/lista-livros/lista-livros";
-import {LivroService} from "../services/livros";
-import {LivroPage} from "../pages/livro/livro";
 
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    LoginPage,
-    ListaLivrosPage,
-    LivroPage
+    LoginPage
   ],
   imports: [
     BrowserModule,
@@ -29,16 +24,13 @@ import {LivroPage} from "../pages/livro/livro";
   entryComponents: [
     MyApp,
     HomePage,
-    LoginPage,
-    ListaLivrosPage,
-    LivroPage
+    LoginPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    GooglePlus,
-    LivroService
+    GooglePlus
   ]
 })
 export class AppModule {}
