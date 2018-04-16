@@ -19,13 +19,13 @@
 <ion-content class="contentMain">
   <ion-card>
     <ion-card-content>
-      <form (ngSubmit)="registerShop(f)" #f="ngForm">
+      <form (ngSubmit)="registerShop(f.value)" #f="ngForm">
         <ion-row style="border-bottom: 1px solid #cccccc">
           <ion-col>
             <ion-list inset>
 
               <ion-item>
-                <ion-input type="text" email placeholder="Nome" name="shopName" required></ion-input>
+                <ion-input type="text" placeholder="Nome" name="shopName" ngModel required></ion-input>
               </ion-item>
 
               <ion-item>

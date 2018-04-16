@@ -22,7 +22,7 @@ export class LoginPage {
         }).then(res => console.log(res))
       .catch(err => console.error(err));
   }*/
-
+/*
   onLogin(){
       this.navCtrl.push(HomePage)
   }
@@ -34,6 +34,6 @@ export class LoginPage {
       /*if(value.email == "admin" && value.password=="admin"){
           console.log(value);
           this.onLogin();
-      }*/
-  }
+      }
+  }*/
 }
