@@ -2,31 +2,51 @@
 
   <ion-navbar hideBackButton>
     <ion-title>Lista de Livros</ion-title>
+
+    <ion-buttons hideWhen="android, core" end>
+      <button ion-button icon-only (click)="addLivro()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding class="contentMain">
 
-  <ion-row *ngFor="let livro of livros">
-      <ion-card padding class="cardLivro">
+  <ion-searchbar
+    [(ngModel)]="myInput"
+    [showCancelButton]="shouldShowCancel"
+    (ionInput)="onInput($event)"
+    (ionCancel)="onCancel($event)">
+  </ion-searchbar>
 
-        <ion-card-header> {{livro.titulo}}</ion-card-header>
-        <ion-card-content>
-          <p>{{livro.autor}}</p>
-        </ion-card-content>
 
-        <ion-row>
-          <ion-col text-right>
-            <button
-              ion-button
-              clear
-              small
-              (click)="onVerMais(livro.id)"> Ver Mais </button>
-          </ion-col>
-        </ion-row>
-      </ion-card>
-  </ion-row>
+  <ion-list>
+
+    <ion-item *ngFor="let livro of livros">
+      <h2> {{livro.titulo}}</h2>
+      <p>{{livro.autor}}</p>
+
+          <button
+            ion-button
+            clear
+            small
+            item-end
+            (click)="onVerMais(livro.id)"> Ver</button>
+    </ion-item>
+
+  </ion-list>
+
+
+  <button showWhen="core" class="button-add-core centralized" ion-button (click)="addShop()">
+    Adicionar Livro
+  </button>
+
+  <button showWhen="android" class="button-add-android" ion-fab (click)="addLivro()">
+    <ion-icon style="color: black" name="add"></ion-icon>
+  </button>
 
 </ion-content>

@@ -1,6 +1,16 @@
 page-lista-livros {
 
-  .cardLivro{
-    max-width: 400px;
+  .button-add-core{
+    color:black;
+    background-color: #ffffffcc;
+    display: block;
+    margin: 8px auto 0;
+  }
+
+  .button-add-android{
+    background-color: #ffffffcc;
+    position:absolute;
+    right: 10px;
+    bottom: 10px
   }
 }

@@ -16,7 +16,7 @@
 
 
 
-<ion-content  class="contentMain">
+<ion-content  padding class="contentMain">
   <ion-searchbar
     [(ngModel)]="myInput"
     [showCancelButton]="shouldShowCancel"
@@ -42,11 +42,11 @@
     </ion-item>
   </ion-list>
 
-  <button showWhen="core" style="color:black;background-color: #ffffffcc; display: block; margin: 0 auto" ion-button (click)="addShop()">
+  <button padding showWhen="core" class="button-add-core centralized" ion-button (click)="addShop()">
       Adicionar loja
   </button>
 
-  <button showWhen="android" style="background-color: #ffffffcc;position:absolute; right: 10px;bottom: 10px" ion-fab (click)="addShop()">
+  <button showWhen="android" class="button-add-android"  ion-fab (click)="addShop()">
       <ion-icon style="color: black" md="md-add"></ion-icon>
   </button>
 

@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-navbar>
+
+
+    <ion-buttons left>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>
+      Cadastre um Livro
+    </ion-title>
+
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="contentMain">
+  <ion-card>
+    <ion-card-content>
+      <form (ngSubmit)="registerLivro(f.value)" #f="ngForm">
+        <ion-row style="border-bottom: 1px solid #cccccc">
+          <ion-col>
+            <ion-list inset>
+
+              <ion-item>
+                <ion-input type="text" email placeholder="Titulo" name="titulo" required></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input type="number" placeholder="Autor" name="autor" ngModel required></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input type="text" placeholder="Capa" name="capa" ngModel required></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input type="text" placeholder="Lançamento" name="dtLancamento" ngModel required></ion-input>
+              </ion-item>
+
+
+            </ion-list>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="signup-col">
+            <button ion-button class="submit-btn" full type="submit" [disabled]="!f.valid">Adicionar novo livro</button>
+          </ion-col>
+        </ion-row>
+
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

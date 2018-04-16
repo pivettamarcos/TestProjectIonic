@@ -3,6 +3,8 @@ import { NavController } from 'ionic-angular';
 import { GooglePlus } from '@ionic-native/google-plus';
 
 import {HomePage} from "../home/home"
+import {ListaLivrosPage} from "../lista-livros/lista-livros";
+import {TabsPage} from "../tabs/tabs";
 
 
 @Component({
@@ -24,16 +26,19 @@ export class LoginPage {
   }*/
 
   onLogin(){
-      this.navCtrl.push(HomePage)
+      this.navCtrl.push(TabsPage)
   }
 
-  loginRegular(f:ngForm){
+  // loginRegular(f:ngForm){
+  //
+  //     console.log(f.form.controls.password.valid);
+  //
+  //     /*if(value.email == "admin" && value.password=="admin"){
+  //         console.log(value);
+  //         this.onLogin();
+  //     }*/
+  // }
+  loginRegular(f: HTMLFormElement) {
 
-      console.log(f.form.controls.password.valid);
-
-      /*if(value.email == "admin" && value.password=="admin"){
-          console.log(value);
-          this.onLogin();
-      }*/
   }
 }
