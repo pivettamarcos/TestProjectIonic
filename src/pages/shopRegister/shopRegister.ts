@@ -20,8 +20,8 @@ export class ShopRegisterPage {
      this.viewCtrl.dismiss();
    }
 
-   registerShop(f: ngForm){
+   /*registerShop(public f: ngForm){
      let data = new Shop(f.value.shopName, f.value.shopNumber, f.value.shopSite, f.value.shopAddress);
      this.viewCtrl.dismiss(data);
-   }
+   }*/
 }
