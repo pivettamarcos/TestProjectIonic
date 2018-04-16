@@ -1,0 +1,30 @@
+<ion-header>
+
+  <ion-navbar hideBackButton>
+    <ion-title>Lista de Livros</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card padding
+  *ngFor="let livro of livros">
+
+    <ion-card-header> {{livro.titulo}}</ion-card-header>
+    <ion-card-content>
+        <p>{{livro.autor}}</p>
+    </ion-card-content>
+
+    <ion-row>
+      <ion-col text-right>
+        <button
+          ion-button
+          clear
+          small
+          (click)="onVerMais(livro.id)"> Ver Mais </button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+</ion-content>

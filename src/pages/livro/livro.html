@@ -1,0 +1,49 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{livro.titulo}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-row justify-content-center padding>
+    <ion-img
+      src={{livro.capa}}
+      width="120"
+      height="180"
+    ></ion-img>
+  </ion-row>
+
+
+  <ion-list>
+    <ion-item>Titulo <p>{{livro.titulo}}</p></ion-item>
+    <ion-item>Autor <p>{{livro.autor}}</p></ion-item>
+    <ion-item>Lançamento <p>{{livro.dtLancamento}}</p></ion-item>
+  </ion-list>
+
+  <ion-row justify-content-between padding>
+  <button
+    ion-button
+    outline
+    align-self-start
+    icon-left
+    item-start>
+      <ion-icon name="document"></ion-icon>
+      Ver PDF
+  </button>
+
+  <button
+    ion-button
+    outline align-self-end
+    color="danger"
+    icon-left
+    item-end>
+      <ion-icon name="trash"></ion-icon>
+      Excluir
+  </button>
+  </ion-row>
+</ion-content>
