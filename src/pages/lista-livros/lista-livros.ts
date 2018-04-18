@@ -6,6 +6,7 @@ import {LivroPage} from "../livro/livro";
 import livros from "../../data/livros";
 import {ShopRegisterPage} from "../shopRegister/shopRegister";
 import {LivroRegisterPage} from '../livro-register/livro-register';
+import {LivroEditPage} from "../livro-edit/livro-edit";
 
 @Component({
   selector: 'page-lista-livros',
@@ -36,5 +37,9 @@ export class ListaLivrosPage {
   addLivro() {
     let profileModal = this.modalCtrl.create(LivroRegisterPage, { userId: 8675309 });
     profileModal.present();
+  }
+
+  editarLivro(id: number) {
+    this.navCtrl.push(LivroEditPage, {livro: this.livrosService.getLivro(id)});
   }
 }

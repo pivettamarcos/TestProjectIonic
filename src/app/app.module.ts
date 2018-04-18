@@ -4,6 +4,8 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { GooglePlus } from '@ionic-native/google-plus';
+import { Camera } from '@ionic-native/camera';
+
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -16,6 +18,7 @@ import {LivroService} from "../services/livros";
 import {TabsPage} from "../pages/tabs/tabs";
 import {ShopService} from "../services/shops";
 import {LivroRegisterPage} from "../pages/livro-register/livro-register";
+import {LivroEditPage} from "../pages/livro-edit/livro-edit";
 
 
 @NgModule({
@@ -28,7 +31,8 @@ import {LivroRegisterPage} from "../pages/livro-register/livro-register";
     LivroPage,
     LivroRegisterPage,
     ListaLivrosPage,
-    TabsPage
+    TabsPage,
+    LivroEditPage
   ],
   imports: [
     BrowserModule,
@@ -44,13 +48,15 @@ import {LivroRegisterPage} from "../pages/livro-register/livro-register";
     LivroPage,
     LivroRegisterPage,
     ListaLivrosPage,
-    TabsPage
+    TabsPage,
+    LivroEditPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     GooglePlus,
+    Camera,
     LivroService,
     ShopService
   ]

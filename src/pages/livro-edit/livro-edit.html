@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Editar Livro
+    </ion-title>
+
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="contentMain">
+  <ion-card>
+    <ion-card-content>
+
+      <ion-row justify-content-center padding>
+        <ion-img
+          src={{livro.capa}}
+          width="120"
+          height="180"
+        ></ion-img>
+      </ion-row>
+
+      <ion-row justify-content-center padding>
+        <button ion-button
+                icon-only
+                width="120"
+                height="180"
+                (click)="onMudarCapa()"
+        >
+          <ion-icon name="camera"></ion-icon>
+        </button>
+      </ion-row>
+
+      <form (ngSubmit)="salvarLivro(f)" #f="ngForm">
+        <ion-row style="border-bottom: 1px solid #cccccc">
+          <ion-col>
+            <ion-list inset>
+
+              <ion-item>
+                <ion-input type="text" placeholder="Título" name="titulo" ngModel required [(ngModel)]="livro.titulo"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input type="text" placeholder="Autor" name="autor" ngModel required [(ngModel)]="livro.autor"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input type="data" placeholder="Lançamento" name="dtLancamento" ngModel required [(ngModel)]="livro.dtLancamento"></ion-input>
+              </ion-item>
+
+
+            </ion-list>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col class="signup-col">
+            <button ion-button class="submit-btn" full type="submit" [disabled]="!f.valid">Salvar</button>
+          </ion-col>
+        </ion-row>
+
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+

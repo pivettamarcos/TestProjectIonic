@@ -24,7 +24,7 @@
     (ionCancel)="onCancel($event)">
   </ion-searchbar>
 
-  <ion-list>
+  <ion-list padding>
     <ion-item *ngFor="let shop of shops">
       <h2>{{shop.nome}}</h2>
       <p>{{shop.site}}</p>
@@ -37,7 +37,7 @@
   </button>
 
   <button showWhen="android" class="button-add-android"  ion-fab (click)="addShop()">
-      <ion-icon style="color: black" md="md-add"></ion-icon>
+      <ion-icon md="md-add"></ion-icon>
   </button>
 
 </ion-content>

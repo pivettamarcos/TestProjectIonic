@@ -24,17 +24,19 @@
     <ion-item>Autor <p>{{livro.autor}}</p></ion-item>
     <ion-item>Lançamento <p>{{livro.dtLancamento}}</p></ion-item>
 
-    <ion-row justify-content-between>
-      <button ion-button
+    <ion-row justify-content-between padding>
+
+      <button
+        ion-button
+        icon-left
         color="danger">
         <ion-icon name="trash" (click)="deleteLivro(livro.id)"></ion-icon>
+        Excluir
       </button>
 
       <button
         ion-button
-        align-self-start
-        icon-left
-        item-start>
+        icon-left>
         <ion-icon name="document"></ion-icon>
         Ver PDF
       </button>

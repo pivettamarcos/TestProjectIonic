@@ -32,4 +32,10 @@ export class LivroService{
     return livros[livros.length-1].id+1;
   }
 
+  atualizarLivro(livroEditado: Livro){
+    let livroAntigo = this.getLivro(livroEditado.id);
+    let index = this.livros.indexOf(livroAntigo);
+    this.livros[index] = livroEditado;
+  }
+
 }

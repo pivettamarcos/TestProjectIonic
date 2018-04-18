@@ -33357,10 +33357,6 @@ ion-navbar.toolbar {
   background-size: cover;
 }
 
-ion-item {
-  background-color: #ffffffcc !important;
-}
-
 ion-list {
   display: block;
   margin: 0 auto !important;
@@ -33381,14 +33377,11 @@ ion-searchbar {
 }
 
 page-lista-livros .button-add-core {
-  color: black;
-  background-color: #ffffffcc;
   display: block;
   margin: 8px auto 0;
 }
 
 page-lista-livros .button-add-android {
-  background-color: #ffffffcc;
   position: absolute;
   right: 10px;
   bottom: 10px;
@@ -33417,14 +33410,11 @@ page-login .loginBox ion-card {
 }
 
 page-shopList .button-add-core {
-  color: black;
-  background-color: #ffffffcc;
   display: block;
   margin: 8px auto 0;
 }
 
 page-shopList .button-add-android {
-  background-color: #ffffffcc;
   position: absolute;
   right: 10px;
   bottom: 10px;

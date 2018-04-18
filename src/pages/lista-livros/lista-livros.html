@@ -24,27 +24,38 @@
   </ion-searchbar>
 
 
-  <ion-list>
+  <ion-list padding>
 
-    <ion-item *ngFor="let livro of livros">
-      <ion-row>
-        <ion-col>
-          <h2> {{livro.titulo}}</h2>
-          <p>{{livro.autor}}</p>
-        </ion-col>
+    <ion-item-sliding *ngFor="let livro of livros">
+    <ion-item>
 
-        <ion-col class="buttonsCol" (click)="deleteLivro(livro.id)">
-          <ion-buttons end>
-            <button clear ion-button>
-              <ion-icon name="trash"></ion-icon>
-            </button>
-            <button ion-button clear small item-end (click)="onVerMais(livro.id)">
-              <ion-icon name="eye"></ion-icon>
-            </button>
-          </ion-buttons>
-        </ion-col>
-      </ion-row>
+      <h2> {{livro.titulo}}</h2>
+      <p>{{livro.autor}}</p>
+
+      <button ion-button clear small item-end (click)="onVerMais(livro.id)">
+        Ver
+      </button>
+
     </ion-item>
+      <ion-item-options>
+
+        <button
+          ion-button
+          (click)="editarLivro(livro.id)">
+          <ion-icon name="create"></ion-icon>
+          Editar
+        </button>
+
+        <button
+          ion-button
+          color="danger"
+          (click)="deleteLivro(livro.id)">
+          <ion-icon name="trash"></ion-icon>
+          Excluir
+        </button>
+
+      </ion-item-options>
+    </ion-item-sliding>
 
   </ion-list>
 
@@ -54,7 +65,7 @@
   </button>
 
   <button showWhen="android" class="button-add-android" ion-fab (click)="addLivro()">
-    <ion-icon style="color: black" name="add"></ion-icon>
+    <ion-icon name="add"></ion-icon>
   </button>
 
 </ion-content>
