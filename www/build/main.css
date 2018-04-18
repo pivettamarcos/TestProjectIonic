@@ -33360,7 +33360,7 @@ ion-navbar.toolbar {
 ion-list {
   display: block;
   margin: 0 auto !important;
-  padding: 0;
+  padding: 0 !important;
   max-width: 800px;
 }
 
@@ -33389,6 +33389,10 @@ page-lista-livros .button-add-android {
 
 page-lista-livros .buttonsCol ion-icon {
   font-size: 2em;
+}
+
+page-livro-register ion-datetime {
+  padding: 0 !important;
 }
 
 page-login #orText {

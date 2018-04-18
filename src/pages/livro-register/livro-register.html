@@ -33,12 +33,18 @@
               </ion-item>
 
               <ion-item>
-                <ion-input type="text" placeholder="Capa" name="capa" ngModel required></ion-input>
+                <ion-datetime placeholder="02/02/2018" name="dtLancamento" displayFormat="DD/MM/YYYY" ngModel></ion-datetime>
+
               </ion-item>
 
-              <ion-item>
-                <ion-input type="text" placeholder="Lançamento" name="dtLancamento" ngModel required></ion-input>
-              </ion-item>
+              <button style="display:block; margin: 0 auto"
+                      ion-button
+                      width="120"
+                      height="180"
+                      (click)="onSetCapa()"
+                > Adicionar capa
+                <ion-icon style="margin-left: 10px" name="camera"></ion-icon>
+              </button>
 
 
             </ion-list>

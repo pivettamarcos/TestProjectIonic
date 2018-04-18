@@ -11,11 +11,7 @@
 <ion-content padding class="contentMain">
 
   <ion-row justify-content-center padding>
-    <ion-img
-      src={{livro.capa}}
-      width="120"
-      height="180"
-    ></ion-img>
+    <img style="max-height: 200px; width:auto" [src]="_DomSanitizationService.bypassSecurityTrustUrl(livro.capa)"/>
   </ion-row>
 
 
@@ -27,14 +23,16 @@
     <ion-row justify-content-between padding>
 
       <button
+        (click)="deleteLivro(livro.id)"
         ion-button
         icon-left
         color="danger">
-        <ion-icon name="trash" (click)="deleteLivro(livro.id)"></ion-icon>
+        <ion-icon name="trash"></ion-icon>
         Excluir
       </button>
 
       <button
+        (click)="openPath()"
         ion-button
         icon-left>
         <ion-icon name="document"></ion-icon>

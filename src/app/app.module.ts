@@ -8,7 +8,6 @@ import { Camera } from '@ionic-native/camera';
 
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import {ShopListPage} from "../pages/shopList/shopList";
 import {ShopRegisterPage} from "../pages/shopRegister/shopRegister";
@@ -19,12 +18,19 @@ import {TabsPage} from "../pages/tabs/tabs";
 import {ShopService} from "../services/shops";
 import {LivroRegisterPage} from "../pages/livro-register/livro-register";
 import {LivroEditPage} from "../pages/livro-edit/livro-edit";
+import {FileChooser} from '@ionic-native/file-chooser';
+import { DatePicker } from '@ionic-native/date-picker';
+import {FilePath} from "@ionic-native/file-path";
+import { FileOpener } from '@ionic-native/file-opener';
+import {FormsPage} from "../pages/login/loginForm";
+
+
 
 
 @NgModule({
   declarations: [
+    FormsPage,
     MyApp,
-    HomePage,
     LoginPage,
     ShopListPage,
     ShopRegisterPage,
@@ -40,8 +46,8 @@ import {LivroEditPage} from "../pages/livro-edit/livro-edit";
   ],
   bootstrap: [IonicApp],
   entryComponents: [
+    FormsPage,
     MyApp,
-    HomePage,
     LoginPage,
     ShopListPage,
     ShopRegisterPage,
@@ -58,7 +64,11 @@ import {LivroEditPage} from "../pages/livro-edit/livro-edit";
     GooglePlus,
     Camera,
     LivroService,
-    ShopService
+    ShopService,
+    FileChooser,
+    DatePicker,
+    FilePath,
+    FileOpener
   ]
 })
 export class AppModule {}

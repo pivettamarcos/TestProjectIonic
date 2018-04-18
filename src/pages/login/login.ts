@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { GooglePlus } from '@ionic-native/google-plus';
 
-import {HomePage} from "../home/home"
-
 
 @Component({
   selector: 'page-login',

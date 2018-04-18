@@ -4,6 +4,10 @@ import {NavParams, ViewController} from "ionic-angular";
 import {NgForm} from "@angular/forms";
 import {LivroService} from "../../services/livros";
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { FileChooser } from '@ionic-native/file-chooser';
+import { DomSanitizer } from '@angular/platform-browser';
+
+
 
 
 
@@ -16,12 +20,20 @@ export class LivroEditPage {
   livro: Livro;
 
   constructor(
+    private _DomSanitizationService: DomSanitizer ,
     private navParams: NavParams,
     private livroService: LivroService,
     private camera: Camera,
+    private fileChooser: FileChooser,
     private viewCtrl: ViewController
 
   ) {}
+
+  escolherPDF(){
+    this.fileChooser.open()
+      .then(uri => this.livro.pdf = uri)
+      .catch(e => console.log(e));
+  }
 
 
   ionViewDidLoad(){

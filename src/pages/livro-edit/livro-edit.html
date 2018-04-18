@@ -8,16 +8,9 @@
 </ion-header>
 
 
-<ion-content class="contentMain">
-  <ion-card>
-    <ion-card-content>
-
+<ion-content padding class="contentMain">
       <ion-row justify-content-center padding>
-        <ion-img
-          src={{livro.capa}}
-          width="120"
-          height="180"
-        ></ion-img>
+        <img style="max-height: 200px; width:auto" [src]="_DomSanitizationService.bypassSecurityTrustUrl(livro.capa)"/>
       </ion-row>
 
       <ion-row justify-content-center padding>
@@ -29,39 +22,40 @@
         >
           <ion-icon name="camera"></ion-icon>
         </button>
+
+          <button ion-button
+                  color="danger"
+                  icon-only
+                  width="120"
+                  height="180"
+                  (click)="escolherPDF()"
+          >
+            <ion-icon name="document"></ion-icon>
+          </button>
       </ion-row>
 
-      <form (ngSubmit)="salvarLivro(f)" #f="ngForm">
-        <ion-row style="border-bottom: 1px solid #cccccc">
-          <ion-col>
-            <ion-list inset>
+  <form (ngSubmit)="salvarLivro(f)" #f="ngForm">
+  <ion-list>
+    <ion-item>
+      <ion-label inset>Título</ion-label>
+      <ion-input type="text" placeholder="Título" name="titulo" ngModel required [(ngModel)]="livro.titulo"></ion-input>
+    </ion-item>
 
-              <ion-item>
-                <ion-input type="text" placeholder="Título" name="titulo" ngModel required [(ngModel)]="livro.titulo"></ion-input>
-              </ion-item>
+    <ion-item>
+      <ion-label inset>Autor</ion-label>
+      <ion-input type="text" placeholder="Autor" name="autor" ngModel required [(ngModel)]="livro.autor"></ion-input>
+    </ion-item>
 
-              <ion-item>
-                <ion-input type="text" placeholder="Autor" name="autor" ngModel required [(ngModel)]="livro.autor"></ion-input>
-              </ion-item>
+    <ion-item>
+      <ion-label inset>Data de lançamento</ion-label>
+      <ion-input type="data" placeholder="Lançamento" name="dtLancamento" ngModel required [(ngModel)]="livro.dtLancamento"></ion-input>
+    </ion-item>
 
-              <ion-item>
-                <ion-input type="data" placeholder="Lançamento" name="dtLancamento" ngModel required [(ngModel)]="livro.dtLancamento"></ion-input>
-              </ion-item>
-
-
-            </ion-list>
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col class="signup-col">
-            <button ion-button class="submit-btn" full type="submit" [disabled]="!f.valid">Salvar</button>
-          </ion-col>
-        </ion-row>
-
-      </form>
-    </ion-card-content>
-  </ion-card>
+    <ion-row justify-content-between padding>
+      <button ion-button class="submit-btn centralized" type="submit" centralized [disabled]="!f.valid">Salvar</button>
+    </ion-row>
+  </ion-list>
+  </form>
 
 </ion-content>
 

@@ -3,7 +3,6 @@ import { NavController, ModalController, NavParams } from 'ionic-angular';
 
 import { GooglePlus } from '@ionic-native/google-plus';
 
-import { HomePage } from "../home/home"
 import { ShopRegisterPage } from "../shopRegister/shopRegister"
 import {ShopService} from "../../services/shops";
 import {Shop} from "../../data/shopInterface";
