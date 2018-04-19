@@ -7,6 +7,7 @@ import { LoginPage } from '../pages/login/login';
 import { ShopListPage } from '../pages/shopList/shopList';
 import { ShopRegisterPage } from '../pages/shopRegister/shopRegister';
 import {TabsPage} from "../pages/tabs/tabs";
+import {PhotoLibrary} from "@ionic-native/photo-library";
 
 
 
@@ -18,7 +19,10 @@ import {TabsPage} from "../pages/tabs/tabs";
 export class MyApp {
   rootPage:any = TabsPage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(
+    platform: Platform,
+    statusBar: StatusBar,
+    splashScreen: SplashScreen) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

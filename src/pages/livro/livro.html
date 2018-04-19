@@ -3,6 +3,14 @@
 
   <ion-navbar>
     <ion-title>{{livro.titulo}}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="editLivro()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
+
+
   </ion-navbar>
 
 </ion-header>
@@ -32,7 +40,7 @@
       </button>
 
       <button
-        (click)="openPath()"
+        (click)="onVerPDF()"
         ion-button
         icon-left>
         <ion-icon name="document"></ion-icon>

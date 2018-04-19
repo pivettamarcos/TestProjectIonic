@@ -16,18 +16,24 @@
 
 <ion-content padding class="contentMain">
 
-  <ion-searchbar
-    [(ngModel)]="myInput"
-    [showCancelButton]="shouldShowCancel"
-    (ionInput)="onInput($event)"
-    (ionCancel)="onCancel($event)">
-  </ion-searchbar>
+  <ion-toolbar padding>
+    <ion-searchbar
+      placeholder="Procurar"
+      [(ngModel)]="myInput"
+      [showCancelButton]="shouldShowCancel"
+      (ionInput)="filterItems($event)"
+      (ionCancel)="onCancel($event)">
+    </ion-searchbar>
+  </ion-toolbar>
 
-
-  <ion-list padding>
+  <ion-list>
 
     <ion-item-sliding *ngFor="let livro of livros">
     <ion-item>
+
+      <ion-thumbnail item-start>
+        <img [src]="_DomSanitizationService.bypassSecurityTrustUrl(livro.capa)">
+      </ion-thumbnail>
 
       <h2> {{livro.titulo}}</h2>
       <p>{{livro.autor}}</p>

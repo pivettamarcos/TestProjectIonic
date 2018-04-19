@@ -4,6 +4,7 @@ import {LivroService} from "../../services/livros";
 import {ViewController} from 'ionic-angular';
 import {Camera, CameraOptions} from "@ionic-native/camera";
 import { DatePicker } from '@ionic-native/date-picker';
+import {PhotoLibrary} from "@ionic-native/photo-library";
 
 
 @Component({
@@ -12,11 +13,19 @@ import { DatePicker } from '@ionic-native/date-picker';
 })
 export class LivroRegisterPage {
 
-  constructor(private datePicker: DatePicker, private camera: Camera, private viewCtrl: ViewController, private livroService: LivroService){}
+  constructor(
+    private datePicker: DatePicker,
+    private camera: Camera,
+    private viewCtrl: ViewController,
+    private livroService: LivroService,
+    private photoLibrary: PhotoLibrary){}
 
   livro: Livro;
-  capaAtual: string = "";
+  capaAtual: string = "https://cor-cdn-static.bibliocommons.com/assets/default_covers/icon-book-93409e4decdf10c55296c91a97ac2653.png";
 
+
+  ngOnInit(){
+  }
 
   registerLivro(livro) {
     console.log(livro);
@@ -46,7 +55,7 @@ export class LivroRegisterPage {
     );
   }
 
-  onSetCapa() {
+  onMudarCapaCamera() {
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
@@ -56,9 +65,7 @@ export class LivroRegisterPage {
 
     this.camera.getPicture(options).then((imageData) => {
       let base64Image = 'data:image/jpeg;base64,' + imageData;
-      this.capaAtual = base64Image;
-     // this.mudarImagemCapa(base64Image);
-
+      this.mudarImagemCapa(base64Image);
 
     }, (err) => {
       // Handle error
@@ -67,4 +74,33 @@ export class LivroRegisterPage {
     });
   }
 
+
+  onMudarCapaGaleria() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      saveToPhotoAlbum: false
+      // encodingType: this.camera.EncodingType.JPEG,
+      // mediaType: this.camera.MediaType.PICTURE
+    }
+
+    this.camera.getPicture(options).then((imageData) => {
+      let base64Image = 'data:image/jpeg;base64,' + imageData;
+      this.mudarImagemCapa(base64Image);
+
+    }, (err) => {
+      // Handle error
+      console.log("erro ao capturar imagem");
+      console.log(err);
+    });
+  }
+
+  mudarImagemCapa(img64: string){
+    this.capaAtual=img64;
+  }
+
+  onAdicionarPDF() {
+
+  }
 }

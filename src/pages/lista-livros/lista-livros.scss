@@ -16,4 +16,11 @@ page-lista-livros {
         font-size: 2em;
       }
   }
+
+    .item ion-thumbnail {
+      img {
+        max-width: 70%;
+        max-height: 100%;
+      }
+  }
 }

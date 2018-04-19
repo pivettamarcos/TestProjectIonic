@@ -47,8 +47,7 @@
     </ion-item>
 
     <ion-item>
-      <ion-label inset>Data de lançamento</ion-label>
-      <ion-input type="data" placeholder="Lançamento" name="dtLancamento" ngModel required [(ngModel)]="livro.dtLancamento"></ion-input>
+      <ion-label>Data de Lançamento</ion-label> <ion-datetime [placeholder]="livro.dtLancamento" name="dtLancamento" displayFormat="DD/MM/YYYY" ngModel required></ion-datetime>
     </ion-item>
 
     <ion-row justify-content-between padding>

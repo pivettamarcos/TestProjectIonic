@@ -33391,7 +33391,16 @@ page-lista-livros .buttonsCol ion-icon {
   font-size: 2em;
 }
 
+page-lista-livros .item ion-thumbnail img {
+  max-width: 70%;
+  max-height: 100%;
+}
+
 page-livro-register ion-datetime {
+  padding: 0 !important;
+}
+
+page-livro-register ion-label {
   padding: 0 !important;
 }
 

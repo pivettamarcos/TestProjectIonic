@@ -5,7 +5,7 @@ export default[
     titulo: 'Metamorfose',
     autor: 'Fraz Kafka',
     dtLancamento:"18/04/1968",
-    pdf: null
+    pdf: 'www/assets/pdf/pdf_qualquer.pdf'
   },
   {
     id: 2,
