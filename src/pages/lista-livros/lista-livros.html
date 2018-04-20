@@ -32,7 +32,7 @@
     <ion-item>
 
       <ion-thumbnail item-start>
-        <img [src]="_DomSanitizationService.bypassSecurityTrustUrl(livro.capa)">
+        <img [src]="domSanitizationService.bypassSecurityTrustUrl(livro.capa)">
       </ion-thumbnail>
 
       <h2> {{livro.titulo}}</h2>

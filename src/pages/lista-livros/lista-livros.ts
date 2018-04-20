@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-import {ModalController, NavController, NavParams} from 'ionic-angular';
+import {ModalController, NavController} from 'ionic-angular';
 import {Livro} from "../../data/livroInterface";
 import {LivroService} from "../../services/livros";
 import {LivroPage} from "../livro/livro";
-import livros from "../../data/livros";
-import {ShopRegisterPage} from "../shopRegister/shopRegister";
 import {LivroRegisterPage} from '../livro-register/livro-register';
 import {LivroEditPage} from "../livro-edit/livro-edit";
 import {DomSanitizer} from "@angular/platform-browser";
@@ -18,10 +16,9 @@ export class ListaLivrosPage {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
     public modalCtrl: ModalController,
     private livrosService: LivroService,
-    private _DomSanitizationService: DomSanitizer) {
+    private domSanitizationService: DomSanitizer) {
   }
 
   ngOnInit(){
@@ -79,5 +76,9 @@ export class ListaLivrosPage {
 
   onCancel(ev: any) {
     this.livros = this.livrosService.getAllLivros();
+  }
+
+  sanitizeBase64(capa: string) {
+    this.domSanitizationService.bypassSecurityTrustUrl(capa);
   }
 }

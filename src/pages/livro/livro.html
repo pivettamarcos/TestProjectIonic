@@ -19,7 +19,7 @@
 <ion-content padding class="contentMain">
 
   <ion-row justify-content-center padding>
-    <img style="max-height: 200px; width:auto" [src]="_DomSanitizationService.bypassSecurityTrustUrl(livro.capa)"/>
+    <img style="max-height: 200px; width:auto" [src]="domSanitizationService.bypassSecurityTrustUrl(livro.capa)"/>
   </ion-row>
 
 

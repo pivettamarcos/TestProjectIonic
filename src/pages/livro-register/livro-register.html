@@ -33,24 +33,23 @@
           <ion-icon name="camera"></ion-icon>
         </button>
         <button
-
           ion-button
           (click)="onMudarCapaGaleria()"
           icon-only>
           <ion-icon name="image"></ion-icon>
         </button>
-      </ion-row>
 
-      <ion-row justify-content-center>
         <button
-          outline
+          [outline]="pdfAtual === ''"
           ion-button
           (click)="onAdicionarPDF()"
-          icon-left>
+          icon-only
+          [color]="btnPDFcolor">
           <ion-icon name="document"></ion-icon>
-          Adicionar PDF
         </button>
+
       </ion-row>
+
 
       <form (ngSubmit)="registerLivro(f.value)" #f="ngForm">
         <ion-row style="border-bottom: 1px solid #cccccc">

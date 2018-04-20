@@ -6,6 +6,9 @@ import {LivroService} from "../../services/livros";
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { DomSanitizer } from '@angular/platform-browser';
+import {File} from "@ionic-native/file";
+import {FilePath} from "@ionic-native/file-path";
+
 
 
 
@@ -18,26 +21,41 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class LivroEditPage {
 
   livro: Livro;
+  corIconeLivro: string;
 
   constructor(
-    private _DomSanitizationService: DomSanitizer ,
+    private domSanitizationService: DomSanitizer ,
     private navParams: NavParams,
     private livroService: LivroService,
     private camera: Camera,
-    private fileChooser: FileChooser,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    public file: File,
+    public fileChooser: FileChooser,
+    public filePath: FilePath
 
   ) {}
 
   escolherPDF(){
     this.fileChooser.open()
-      .then(uri => this.livro.pdf = uri)
+      .then(uri => {
+        console.log('Relative Path: '+ uri);
+        this.filePath.resolveNativePath(uri).then(resolvedFilePath =>{
+          console.log('Real Path: '+ resolvedFilePath);
+          this.livro.pdf = resolvedFilePath;
+        });
+      })
       .catch(e => console.log(e));
   }
 
 
   ionViewDidLoad(){
     this.livro = this.navParams.get('livro');
+
+    if(this.livro.pdf === "" || this.livro.pdf === null)
+      this.corIconeLivro = "danger";
+    else
+      this.corIconeLivro = "verdeOk"
+
   }
   ngOnInit(){
     this.livro = this.navParams.get('livro');
@@ -75,4 +93,9 @@ export class LivroEditPage {
   mudarImagemCapa(img64: string){
     this.livro.capa=img64;
   }
+
+  sanitizeBase64(capa: string) {
+    this.domSanitizationService.bypassSecurityTrustUrl(capa);
+  }
+
 }

@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController } from 'ionic-angular';
-import { GooglePlus } from '@ionic-native/google-plus';
+import { ViewController } from 'ionic-angular';
 
-import {Shop} from "../../models/shop"
 import {ShopService} from "../../services/shops";
 
 

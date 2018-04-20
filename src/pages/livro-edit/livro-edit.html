@@ -10,7 +10,7 @@
 
 <ion-content padding class="contentMain">
       <ion-row justify-content-center padding>
-        <img style="max-height: 200px; width:auto" [src]="_DomSanitizationService.bypassSecurityTrustUrl(livro.capa)"/>
+        <img style="max-height: 200px; width:auto" [src]="domSanitizationService.bypassSecurityTrustUrl(livro.capa)"/>
       </ion-row>
 
       <ion-row justify-content-center padding>
@@ -24,7 +24,7 @@
         </button>
 
           <button ion-button
-                  color="danger"
+                  [color]="corIconeLivro"
                   icon-only
                   width="120"
                   height="180"
@@ -47,7 +47,7 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>Data de Lançamento</ion-label> <ion-datetime [placeholder]="livro.dtLancamento" name="dtLancamento" displayFormat="DD/MM/YYYY" ngModel required></ion-datetime>
+      <ion-label>Data de Lançamento</ion-label> <ion-datetime [placeholder]="livro.dtLancamento" name="dtLancamento" displayFormat="DD/MM/YYYY"  [(ngModel)]="livro.dtLancamento" required></ion-datetime>
     </ion-item>
 
     <ion-row justify-content-between padding>

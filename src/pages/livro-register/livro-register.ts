@@ -4,7 +4,8 @@ import {LivroService} from "../../services/livros";
 import {ViewController} from 'ionic-angular';
 import {Camera, CameraOptions} from "@ionic-native/camera";
 import { DatePicker } from '@ionic-native/date-picker';
-import {PhotoLibrary} from "@ionic-native/photo-library";
+import {FileChooser} from "@ionic-native/file-chooser";
+import {FilePath} from "@ionic-native/file-path";
 
 
 @Component({
@@ -18,13 +19,17 @@ export class LivroRegisterPage {
     private camera: Camera,
     private viewCtrl: ViewController,
     private livroService: LivroService,
-    private photoLibrary: PhotoLibrary){}
+    private fileChooser: FileChooser,
+    private filePath: FilePath){}
 
   livro: Livro;
   capaAtual: string = "https://cor-cdn-static.bibliocommons.com/assets/default_covers/icon-book-93409e4decdf10c55296c91a97ac2653.png";
+  pdfAtual: string = "";
+  btnPDFcolor: string;
 
 
   ngOnInit(){
+    this.btnPDFcolor = "danger";
   }
 
   registerLivro(livro) {
@@ -34,7 +39,7 @@ export class LivroRegisterPage {
     }
 
 
-    this.livroService.addLivro({id: this.livroService.getProximoId(), capa: this.capaAtual, titulo: livro.titulo, autor: livro.autor, dtLancamento: livro.dtLancamento, pdf: livro.pdf});
+    this.livroService.addLivro({id: this.livroService.getProximoId(), capa: this.capaAtual, titulo: livro.titulo, autor: livro.autor, dtLancamento: livro.dtLancamento, pdf: this.pdfAtual});
 
     console.log(this.livroService.getAllLivros());
     this.viewCtrl.dismiss();
@@ -61,7 +66,7 @@ export class LivroRegisterPage {
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE
-    }
+    };
 
     this.camera.getPicture(options).then((imageData) => {
       let base64Image = 'data:image/jpeg;base64,' + imageData;
@@ -83,7 +88,7 @@ export class LivroRegisterPage {
       saveToPhotoAlbum: false
       // encodingType: this.camera.EncodingType.JPEG,
       // mediaType: this.camera.MediaType.PICTURE
-    }
+    };
 
     this.camera.getPicture(options).then((imageData) => {
       let base64Image = 'data:image/jpeg;base64,' + imageData;
@@ -101,6 +106,15 @@ export class LivroRegisterPage {
   }
 
   onAdicionarPDF() {
-
+    this.fileChooser.open()
+      .then(uri => {
+        console.log('Relative Path: '+ uri);
+        this.filePath.resolveNativePath(uri).then(resolvedFilePath =>{
+          console.log('Real Path: '+ resolvedFilePath);
+          this.pdfAtual = resolvedFilePath;
+          this.btnPDFcolor = "verdeOK"
+        });
+      })
+      .catch(e => console.log(e));
   }
 }

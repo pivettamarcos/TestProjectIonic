@@ -13,7 +13,7 @@ export default[
     titulo: 'A Revolução dos Bichos',
     autor: 'George Orwell',
     dtLancamento:"18/04/1968",
-    pdf: null
+    pdf: ''
   },
   {
     id: 3,
@@ -21,7 +21,7 @@ export default[
     titulo: '1984',
     autor: 'George Orwell',
     dtLancamento:"18/04/1968",
-    pdf: null
+    pdf: ''
   },
   {
     id: 4,
@@ -29,7 +29,7 @@ export default[
     titulo: 'Laranja Mecânica',
     autor: 'Brugees',
     dtLancamento:"18/04/1968",
-    pdf: null
+    pdf: ''
   }
 
 ];

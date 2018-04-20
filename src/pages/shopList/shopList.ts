@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, NavParams } from 'ionic-angular';
+import {  ModalController } from 'ionic-angular';
 
-import { GooglePlus } from '@ionic-native/google-plus';
 
 import { ShopRegisterPage } from "../shopRegister/shopRegister"
 import {ShopService} from "../../services/shops";

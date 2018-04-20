@@ -5,7 +5,7 @@ webpackJsonp([0],{
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ShopService; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_shops__ = __webpack_require__(284);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_shops__ = __webpack_require__(283);
 
 var ShopService = /** @class */ (function () {
     function ShopService() {
@@ -40,8 +40,10 @@ var ShopService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_livros__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_camera__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_file_chooser__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_file_chooser__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_file__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_file_path__ = __webpack_require__(106);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -57,23 +59,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var LivroEditPage = /** @class */ (function () {
-    function LivroEditPage(_DomSanitizationService, navParams, livroService, camera, fileChooser, viewCtrl) {
-        this._DomSanitizationService = _DomSanitizationService;
+    function LivroEditPage(domSanitizationService, navParams, livroService, camera, viewCtrl, file, fileChooser, filePath) {
+        this.domSanitizationService = domSanitizationService;
         this.navParams = navParams;
         this.livroService = livroService;
         this.camera = camera;
-        this.fileChooser = fileChooser;
         this.viewCtrl = viewCtrl;
+        this.file = file;
+        this.fileChooser = fileChooser;
+        this.filePath = filePath;
     }
     LivroEditPage.prototype.escolherPDF = function () {
         var _this = this;
         this.fileChooser.open()
-            .then(function (uri) { return _this.livro.pdf = uri; })
+            .then(function (uri) {
+            console.log('Relative Path: ' + uri);
+            _this.filePath.resolveNativePath(uri).then(function (resolvedFilePath) {
+                console.log('Real Path: ' + resolvedFilePath);
+                _this.livro.pdf = resolvedFilePath;
+            });
+        })
             .catch(function (e) { return console.log(e); });
     };
     LivroEditPage.prototype.ionViewDidLoad = function () {
         this.livro = this.navParams.get('livro');
+        if (this.livro.pdf === "" || this.livro.pdf === null)
+            this.corIconeLivro = "danger";
+        else
+            this.corIconeLivro = "verdeOk";
     };
     LivroEditPage.prototype.ngOnInit = function () {
         this.livro = this.navParams.get('livro');
@@ -106,16 +122,21 @@ var LivroEditPage = /** @class */ (function () {
     LivroEditPage.prototype.mudarImagemCapa = function (img64) {
         this.livro.capa = img64;
     };
+    LivroEditPage.prototype.sanitizeBase64 = function (capa) {
+        this.domSanitizationService.bypassSecurityTrustUrl(capa);
+    };
     LivroEditPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-livro-edit',template:/*ion-inline-start:"C:\Users\Rodrigo\ionic\TestProject\src\pages\livro-edit\livro-edit.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Editar Livro\n    </ion-title>\n\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding class="contentMain">\n      <ion-row justify-content-center padding>\n        <img style="max-height: 200px; width:auto" [src]="_DomSanitizationService.bypassSecurityTrustUrl(livro.capa)"/>\n      </ion-row>\n\n      <ion-row justify-content-center padding>\n        <button ion-button\n                icon-only\n                width="120"\n                height="180"\n                (click)="onMudarCapa()"\n        >\n          <ion-icon name="camera"></ion-icon>\n        </button>\n\n          <button ion-button\n                  color="danger"\n                  icon-only\n                  width="120"\n                  height="180"\n                  (click)="escolherPDF()"\n          >\n            <ion-icon name="document"></ion-icon>\n          </button>\n      </ion-row>\n\n  <form (ngSubmit)="salvarLivro(f)" #f="ngForm">\n  <ion-list>\n    <ion-item>\n      <ion-label inset>Título</ion-label>\n      <ion-input type="text" placeholder="Título" name="titulo" ngModel required [(ngModel)]="livro.titulo"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label inset>Autor</ion-label>\n      <ion-input type="text" placeholder="Autor" name="autor" ngModel required [(ngModel)]="livro.autor"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Data de Lançamento</ion-label> <ion-datetime [placeholder]="livro.dtLancamento" name="dtLancamento" displayFormat="DD/MM/YYYY" ngModel required></ion-datetime>\n    </ion-item>\n\n    <ion-row justify-content-between padding>\n      <button ion-button class="submit-btn centralized" type="submit" centralized [disabled]="!f.valid">Salvar</button>\n    </ion-row>\n  </ion-list>\n  </form>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\Rodrigo\ionic\TestProject\src\pages\livro-edit\livro-edit.html"*/,
+            selector: 'page-livro-edit',template:/*ion-inline-start:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\livro-edit\livro-edit.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Editar Livro\n    </ion-title>\n\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding class="contentMain">\n      <ion-row justify-content-center padding>\n        <img style="max-height: 200px; width:auto" [src]="domSanitizationService.bypassSecurityTrustUrl(livro.capa)"/>\n      </ion-row>\n\n      <ion-row justify-content-center padding>\n        <button ion-button\n                icon-only\n                width="120"\n                height="180"\n                (click)="onMudarCapa()"\n        >\n          <ion-icon name="camera"></ion-icon>\n        </button>\n\n          <button ion-button\n                  [color]="corIconeLivro"\n                  icon-only\n                  width="120"\n                  height="180"\n                  (click)="escolherPDF()"\n          >\n            <ion-icon name="document"></ion-icon>\n          </button>\n      </ion-row>\n\n  <form (ngSubmit)="salvarLivro(f)" #f="ngForm">\n  <ion-list>\n    <ion-item>\n      <ion-label inset>Título</ion-label>\n      <ion-input type="text" placeholder="Título" name="titulo" ngModel required [(ngModel)]="livro.titulo"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label inset>Autor</ion-label>\n      <ion-input type="text" placeholder="Autor" name="autor" ngModel required [(ngModel)]="livro.autor"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Data de Lançamento</ion-label> <ion-datetime [placeholder]="livro.dtLancamento" name="dtLancamento" displayFormat="DD/MM/YYYY"  [(ngModel)]="livro.dtLancamento" required></ion-datetime>\n    </ion-item>\n\n    <ion-row justify-content-between padding>\n      <button ion-button class="submit-btn centralized" type="submit" centralized [disabled]="!f.valid">Salvar</button>\n    </ion-row>\n  </ion-list>\n  </form>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\livro-edit\livro-edit.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_5__angular_platform_browser__["c" /* DomSanitizer */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_2__services_livros__["a" /* LivroService */],
             __WEBPACK_IMPORTED_MODULE_3__ionic_native_camera__["a" /* Camera */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* ViewController */],
+            __WEBPACK_IMPORTED_MODULE_6__ionic_native_file__["a" /* File */],
             __WEBPACK_IMPORTED_MODULE_4__ionic_native_file_chooser__["a" /* FileChooser */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* ViewController */]])
+            __WEBPACK_IMPORTED_MODULE_7__ionic_native_file_path__["a" /* FilePath */]])
     ], LivroEditPage);
     return LivroEditPage;
 }());
@@ -124,7 +145,7 @@ var LivroEditPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 113:
+/***/ 116:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -137,11 +158,11 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 113;
+webpackEmptyAsyncContext.id = 116;
 
 /***/ }),
 
-/***/ 154:
+/***/ 157:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -154,18 +175,18 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 154;
+webpackEmptyAsyncContext.id = 157;
 
 /***/ }),
 
-/***/ 197:
+/***/ 200:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TabsPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shopList_shopList__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lista_livros_lista_livros__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shopList_shopList__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lista_livros_lista_livros__ = __webpack_require__(203);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -182,7 +203,7 @@ var TabsPage = /** @class */ (function () {
     }
     TabsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-tabs',template:/*ion-inline-start:"C:\Users\Rodrigo\ionic\TestProject\src\pages\tabs\tabs.html"*/'<ion-tabs>\n  <ion-tab [root]="shopListPage" tabIcon="basket" tabTitle="Lojas"></ion-tab>\n  <ion-tab [root]="listaLivrosPage" tabIcon="book" tabTitle="Livros"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"C:\Users\Rodrigo\ionic\TestProject\src\pages\tabs\tabs.html"*/,
+            selector: 'page-tabs',template:/*ion-inline-start:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\tabs\tabs.html"*/'<ion-tabs>\n\n  <ion-tab [root]="shopListPage" tabIcon="basket" tabTitle="Lojas"></ion-tab>\n\n  <ion-tab [root]="listaLivrosPage" tabIcon="book" tabTitle="Livros"></ion-tab>\n\n</ion-tabs>\n\n'/*ion-inline-end:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\tabs\tabs.html"*/,
         })
     ], TabsPage);
     return TabsPage;
@@ -192,14 +213,14 @@ var TabsPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 198:
+/***/ 201:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ShopListPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shopRegister_shopRegister__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shopRegister_shopRegister__ = __webpack_require__(202);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_shops__ = __webpack_require__(101);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -229,7 +250,7 @@ var ShopListPage = /** @class */ (function () {
     };
     ShopListPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-shopList',template:/*ion-inline-start:"C:\Users\Rodrigo\ionic\TestProject\src\pages\shopList\shopList.html"*/'<ion-header>\n  <ion-navbar>\n\n        <ion-title>\n          Lista de lojas\n        </ion-title>\n\n        <ion-buttons hideWhen="android, core" end>\n          <button ion-button icon-only (click)="addShop()">\n            <ion-icon ios="ios-add" md="md-add"></ion-icon>\n          </button>\n        </ion-buttons>\n\n    </ion-navbar>\n</ion-header>\n\n\n\n<ion-content  padding class="contentMain">\n  <ion-searchbar\n    [(ngModel)]="myInput"\n    [showCancelButton]="shouldShowCancel"\n    (ionInput)="onInput($event)"\n    (ionCancel)="onCancel($event)">\n  </ion-searchbar>\n\n  <ion-list padding>\n    <ion-item *ngFor="let shop of shops">\n      <h2>{{shop.nome}}</h2>\n      <p>{{shop.site}}</p>\n      <button ion-button clear item-end>Ver</button>\n    </ion-item>\n  </ion-list>\n\n  <button padding showWhen="core" class="button-add-core centralized" ion-button (click)="addShop()">\n      Adicionar loja\n  </button>\n\n  <button showWhen="android" class="button-add-android"  ion-fab (click)="addShop()">\n      <ion-icon md="md-add"></ion-icon>\n  </button>\n\n</ion-content>\n'/*ion-inline-end:"C:\Users\Rodrigo\ionic\TestProject\src\pages\shopList\shopList.html"*/
+            selector: 'page-shopList',template:/*ion-inline-start:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\shopList\shopList.html"*/'<ion-header>\n\n  <ion-navbar>\n\n\n\n        <ion-title>\n\n          Lista de lojas\n\n        </ion-title>\n\n\n\n        <ion-buttons hideWhen="android, core" end>\n\n          <button ion-button icon-only (click)="addShop()">\n\n            <ion-icon ios="ios-add" md="md-add"></ion-icon>\n\n          </button>\n\n        </ion-buttons>\n\n\n\n    </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n\n\n<ion-content  padding class="contentMain">\n\n  <ion-searchbar\n\n    [(ngModel)]="myInput"\n\n    [showCancelButton]="shouldShowCancel"\n\n    (ionInput)="onInput($event)"\n\n    (ionCancel)="onCancel($event)">\n\n  </ion-searchbar>\n\n\n\n  <ion-list padding>\n\n    <ion-item *ngFor="let shop of shops">\n\n      <h2>{{shop.nome}}</h2>\n\n      <p>{{shop.site}}</p>\n\n      <button ion-button clear item-end>Ver</button>\n\n    </ion-item>\n\n  </ion-list>\n\n\n\n  <button padding showWhen="core" class="button-add-core centralized" ion-button (click)="addShop()">\n\n      Adicionar loja\n\n  </button>\n\n\n\n  <button showWhen="android" class="button-add-android"  ion-fab (click)="addShop()">\n\n      <ion-icon md="md-add"></ion-icon>\n\n  </button>\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\shopList\shopList.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* ModalController */], __WEBPACK_IMPORTED_MODULE_3__services_shops__["a" /* ShopService */]])
     ], ShopListPage);
@@ -240,7 +261,7 @@ var ShopListPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 199:
+/***/ 202:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -277,7 +298,7 @@ var ShopRegisterPage = /** @class */ (function () {
     };
     ShopRegisterPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-shopregister',template:/*ion-inline-start:"C:\Users\Rodrigo\ionic\TestProject\src\pages\shopRegister\shopRegister.html"*/'<ion-header>\n\n  <ion-navbar>\n\n\n\n\n\n        <ion-buttons left>\n\n          <button ion-button icon-only (click)="dismiss()">\n\n            <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>\n\n          </button>\n\n        </ion-buttons>\n\n\n\n        <ion-title>\n\n          Cadastre uma loja\n\n        </ion-title>\n\n\n\n    </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content class="contentMain">\n\n  <ion-card>\n\n    <ion-card-content>\n\n      <form (ngSubmit)="registerShop(f.value)" #f="ngForm">\n\n        <ion-row style="border-bottom: 1px solid #cccccc">\n\n          <ion-col>\n\n            <ion-list inset>\n\n\n\n              <ion-item>\n\n                <ion-input type="text" placeholder="Nome" name="shopName" ngModel required></ion-input>\n\n              </ion-item>\n\n\n\n              <ion-item>\n\n                <ion-input type="number" placeholder="Número" name="shopNumber" ngModel required></ion-input>\n\n              </ion-item>\n\n\n\n              <ion-item>\n\n                <ion-input type="text" placeholder="Website" name="shopSite" ngModel required></ion-input>\n\n              </ion-item>\n\n\n\n              <ion-item>\n\n                <ion-input type="text" placeholder="Endereço" name="shopAddress" ngModel required></ion-input>\n\n              </ion-item>\n\n\n\n\n\n            </ion-list>\n\n          </ion-col>\n\n        </ion-row>\n\n\n\n        <ion-row>\n\n          <ion-col class="signup-col">\n\n            <button ion-button class="submit-btn" full type="submit" [disabled]="!f.valid">Adicionar nova loja</button>\n\n          </ion-col>\n\n        </ion-row>\n\n\n\n    </form>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\Rodrigo\ionic\TestProject\src\pages\shopRegister\shopRegister.html"*/
+            selector: 'page-shopregister',template:/*ion-inline-start:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\shopRegister\shopRegister.html"*/'<ion-header>\n\n  <ion-navbar>\n\n\n\n\n\n        <ion-buttons left>\n\n          <button ion-button icon-only (click)="dismiss()">\n\n            <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>\n\n          </button>\n\n        </ion-buttons>\n\n\n\n        <ion-title>\n\n          Cadastre uma loja\n\n        </ion-title>\n\n\n\n    </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content class="contentMain">\n\n  <ion-card>\n\n    <ion-card-content>\n\n      <form (ngSubmit)="registerShop(f.value)" #f="ngForm">\n\n        <ion-row style="border-bottom: 1px solid #cccccc">\n\n          <ion-col>\n\n            <ion-list inset>\n\n\n\n              <ion-item>\n\n                <ion-input type="text" placeholder="Nome" name="shopName" ngModel required></ion-input>\n\n              </ion-item>\n\n\n\n              <ion-item>\n\n                <ion-input type="number" placeholder="Número" name="shopNumber" ngModel required></ion-input>\n\n              </ion-item>\n\n\n\n              <ion-item>\n\n                <ion-input type="text" placeholder="Website" name="shopSite" ngModel required></ion-input>\n\n              </ion-item>\n\n\n\n              <ion-item>\n\n                <ion-input type="text" placeholder="Endereço" name="shopAddress" ngModel required></ion-input>\n\n              </ion-item>\n\n\n\n\n\n            </ion-list>\n\n          </ion-col>\n\n        </ion-row>\n\n\n\n        <ion-row>\n\n          <ion-col class="signup-col">\n\n            <button ion-button class="submit-btn" full type="submit" [disabled]="!f.valid">Adicionar nova loja</button>\n\n          </ion-col>\n\n        </ion-row>\n\n\n\n    </form>\n\n    </ion-card-content>\n\n  </ion-card>\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\shopRegister\shopRegister.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_shops__["a" /* ShopService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* ViewController */]])
     ], ShopRegisterPage);
@@ -288,7 +309,7 @@ var ShopRegisterPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 200:
+/***/ 203:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -296,7 +317,7 @@ var ShopRegisterPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_livros__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__livro_livro__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__livro_livro__ = __webpack_require__(204);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__livro_register_livro_register__ = __webpack_require__(206);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__livro_edit_livro_edit__ = __webpack_require__(102);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_platform_browser__ = __webpack_require__(19);
@@ -317,12 +338,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var ListaLivrosPage = /** @class */ (function () {
-    function ListaLivrosPage(navCtrl, navParams, modalCtrl, livrosService, _DomSanitizationService) {
+    function ListaLivrosPage(navCtrl, modalCtrl, livrosService, domSanitizationService) {
         this.navCtrl = navCtrl;
-        this.navParams = navParams;
         this.modalCtrl = modalCtrl;
         this.livrosService = livrosService;
-        this._DomSanitizationService = _DomSanitizationService;
+        this.domSanitizationService = domSanitizationService;
     }
     ListaLivrosPage.prototype.ngOnInit = function () {
         this.livros = this.livrosService.getAllLivros();
@@ -366,12 +386,14 @@ var ListaLivrosPage = /** @class */ (function () {
     ListaLivrosPage.prototype.onCancel = function (ev) {
         this.livros = this.livrosService.getAllLivros();
     };
+    ListaLivrosPage.prototype.sanitizeBase64 = function (capa) {
+        this.domSanitizationService.bypassSecurityTrustUrl(capa);
+    };
     ListaLivrosPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-lista-livros',template:/*ion-inline-start:"C:\Users\Rodrigo\ionic\TestProject\src\pages\lista-livros\lista-livros.html"*/'<ion-header>\n\n  <ion-navbar hideBackButton>\n    <ion-title>Lista de Livros</ion-title>\n\n    <ion-buttons hideWhen="android, core" end>\n      <button ion-button icon-only (click)="addLivro()">\n        <ion-icon name="add"></ion-icon>\n      </button>\n    </ion-buttons>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding class="contentMain">\n\n  <ion-toolbar padding>\n    <ion-searchbar\n      placeholder="Procurar"\n      [(ngModel)]="myInput"\n      [showCancelButton]="shouldShowCancel"\n      (ionInput)="filterItems($event)"\n      (ionCancel)="onCancel($event)">\n    </ion-searchbar>\n  </ion-toolbar>\n\n  <ion-list>\n\n    <ion-item-sliding *ngFor="let livro of livros">\n    <ion-item>\n\n      <ion-thumbnail item-start>\n        <img [src]="_DomSanitizationService.bypassSecurityTrustUrl(livro.capa)">\n      </ion-thumbnail>\n\n      <h2> {{livro.titulo}}</h2>\n      <p>{{livro.autor}}</p>\n\n      <button ion-button clear small item-end (click)="onVerMais(livro.id)">\n        Ver\n      </button>\n\n    </ion-item>\n      <ion-item-options>\n\n        <button\n          ion-button\n          (click)="editarLivro(livro.id)">\n          <ion-icon name="create"></ion-icon>\n          Editar\n        </button>\n\n        <button\n          ion-button\n          color="danger"\n          (click)="deleteLivro(livro.id)">\n          <ion-icon name="trash"></ion-icon>\n          Excluir\n        </button>\n\n      </ion-item-options>\n    </ion-item-sliding>\n\n  </ion-list>\n\n\n  <button showWhen="core" class="button-add-core centralized" ion-button (click)="addLivro()">\n    Adicionar Livro\n  </button>\n\n  <button showWhen="android" class="button-add-android" ion-fab (click)="addLivro()">\n    <ion-icon name="add"></ion-icon>\n  </button>\n\n</ion-content>\n'/*ion-inline-end:"C:\Users\Rodrigo\ionic\TestProject\src\pages\lista-livros\lista-livros.html"*/,
+            selector: 'page-lista-livros',template:/*ion-inline-start:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\lista-livros\lista-livros.html"*/'<ion-header>\n\n  <ion-navbar hideBackButton>\n    <ion-title>Lista de Livros</ion-title>\n\n    <ion-buttons hideWhen="android, core" end>\n      <button ion-button icon-only (click)="addLivro()">\n        <ion-icon name="add"></ion-icon>\n      </button>\n    </ion-buttons>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding class="contentMain">\n\n  <ion-toolbar padding>\n    <ion-searchbar\n      placeholder="Procurar"\n      [(ngModel)]="myInput"\n      [showCancelButton]="shouldShowCancel"\n      (ionInput)="filterItems($event)"\n      (ionCancel)="onCancel($event)">\n    </ion-searchbar>\n  </ion-toolbar>\n\n  <ion-list>\n\n    <ion-item-sliding *ngFor="let livro of livros">\n    <ion-item>\n\n      <ion-thumbnail item-start>\n        <img [src]="domSanitizationService.bypassSecurityTrustUrl(livro.capa)">\n      </ion-thumbnail>\n\n      <h2> {{livro.titulo}}</h2>\n      <p>{{livro.autor}}</p>\n\n      <button ion-button clear small item-end (click)="onVerMais(livro.id)">\n        Ver\n      </button>\n\n    </ion-item>\n      <ion-item-options>\n\n        <button\n          ion-button\n          (click)="editarLivro(livro.id)">\n          <ion-icon name="create"></ion-icon>\n          Editar\n        </button>\n\n        <button\n          ion-button\n          color="danger"\n          (click)="deleteLivro(livro.id)">\n          <ion-icon name="trash"></ion-icon>\n          Excluir\n        </button>\n\n      </ion-item-options>\n    </ion-item-sliding>\n\n  </ion-list>\n\n\n  <button showWhen="core" class="button-add-core centralized" ion-button (click)="addLivro()">\n    Adicionar Livro\n  </button>\n\n  <button showWhen="android" class="button-add-android" ion-fab (click)="addLivro()">\n    <ion-icon name="add"></ion-icon>\n  </button>\n\n</ion-content>\n'/*ion-inline-end:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\lista-livros\lista-livros.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* ModalController */],
             __WEBPACK_IMPORTED_MODULE_2__services_livros__["a" /* LivroService */],
             __WEBPACK_IMPORTED_MODULE_6__angular_platform_browser__["c" /* DomSanitizer */]])
@@ -383,7 +405,7 @@ var ListaLivrosPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 201:
+/***/ 204:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -392,11 +414,9 @@ var ListaLivrosPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_livros__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_file_opener__ = __webpack_require__(202);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_file_path__ = __webpack_require__(203);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__livro_edit_livro_edit__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_document_viewer__ = __webpack_require__(205);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_file__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__livro_edit_livro_edit__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_file__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_file_opener__ = __webpack_require__(205);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -413,54 +433,49 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-
 var LivroPage = /** @class */ (function () {
-    function LivroPage(document, filePath, fileOpener, _DomSanitizationService, livrosService, navCtrl, navParams, file) {
-        this.document = document;
-        this.filePath = filePath;
-        this.fileOpener = fileOpener;
-        this._DomSanitizationService = _DomSanitizationService;
+    function LivroPage(domSanitizationService, livrosService, navCtrl, navParams, file, fileOpener) {
+        this.domSanitizationService = domSanitizationService;
         this.livrosService = livrosService;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.file = file;
+        this.fileOpener = fileOpener;
     }
     LivroPage.prototype.ngOnInit = function () {
         this.livro = this.navParams.data;
     };
     LivroPage.prototype.onVerPDF = function () {
-        var options = {
-            title: this.livro.titulo
-        };
-        this.document.viewDocument(this.file.applicationDirectory + this.livro.pdf, 'application/pdf', options);
+        //SÓ FUNCIONA NO ANDROID
+        this.fileOpener.open(this.livro.pdf, 'application/pdf').then(function (value) {
+            console.log('File exists and is beeing opened...');
+        }).catch(function (err) { return console.log('error on opening the file ->' + err); });
+        //SÓ FUNCIONA NO IOS
+        //TODO
     };
-    // openPath(){
-    //   this.filePath.resolveNativePath(this.livro.pdf)
-    //     .then(filePath =>this.openPDF(filePath))
-    //     .catch(err => console.log(err));
-    // }
-    // openPDF(path){
-    //   this.fileOpener.open(path, 'application/pdf')
-    //     .then(() => console.log('File is opened'))
-    //     .catch(e => console.log('Error opening file', e));
-    // }
     LivroPage.prototype.deleteLivro = function (id) {
         console.log(id + "vddd");
         this.livrosService.deleteLivro(id);
         this.navCtrl.pop();
     };
     LivroPage.prototype.editLivro = function () {
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_6__livro_edit_livro_edit__["a" /* LivroEditPage */], { livro: this.livro });
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__livro_edit_livro_edit__["a" /* LivroEditPage */], { livro: this.livro });
+    };
+    LivroPage.prototype.sanitizeBase64 = function (capa) {
+        this.domSanitizationService.bypassSecurityTrustUrl(capa);
     };
     LivroPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-livro',template:/*ion-inline-start:"C:\Users\Rodrigo\ionic\TestProject\src\pages\livro\livro.html"*/'\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>{{livro.titulo}}</ion-title>\n\n    <ion-buttons end>\n      <button ion-button icon-only (click)="editLivro()">\n        <ion-icon name="create"></ion-icon>\n      </button>\n    </ion-buttons>\n\n\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding class="contentMain">\n\n  <ion-row justify-content-center padding>\n    <img style="max-height: 200px; width:auto" [src]="_DomSanitizationService.bypassSecurityTrustUrl(livro.capa)"/>\n  </ion-row>\n\n\n  <ion-list>\n    <ion-item>Titulo <p>{{livro.titulo}}</p></ion-item>\n    <ion-item>Autor <p>{{livro.autor}}</p></ion-item>\n    <ion-item>Lançamento <p>{{livro.dtLancamento}}</p></ion-item>\n\n    <ion-row justify-content-between padding>\n\n      <button\n        (click)="deleteLivro(livro.id)"\n        ion-button\n        icon-left\n        color="danger">\n        <ion-icon name="trash"></ion-icon>\n        Excluir\n      </button>\n\n      <button\n        (click)="onVerPDF()"\n        ion-button\n        icon-left>\n        <ion-icon name="document"></ion-icon>\n        Ver PDF\n      </button>\n    </ion-row>\n  </ion-list>\n\n\n</ion-content>\n'/*ion-inline-end:"C:\Users\Rodrigo\ionic\TestProject\src\pages\livro\livro.html"*/,
+            selector: 'page-livro',template:/*ion-inline-start:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\livro\livro.html"*/'\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>{{livro.titulo}}</ion-title>\n\n    <ion-buttons end>\n      <button ion-button icon-only (click)="editLivro()">\n        <ion-icon name="create"></ion-icon>\n      </button>\n    </ion-buttons>\n\n\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding class="contentMain">\n\n  <ion-row justify-content-center padding>\n    <img style="max-height: 200px; width:auto" [src]="domSanitizationService.bypassSecurityTrustUrl(livro.capa)"/>\n  </ion-row>\n\n\n  <ion-list>\n    <ion-item>Titulo <p>{{livro.titulo}}</p></ion-item>\n    <ion-item>Autor <p>{{livro.autor}}</p></ion-item>\n    <ion-item>Lançamento <p>{{livro.dtLancamento}}</p></ion-item>\n\n    <ion-row justify-content-between padding>\n\n      <button\n        (click)="deleteLivro(livro.id)"\n        ion-button\n        icon-left\n        color="danger">\n        <ion-icon name="trash"></ion-icon>\n        Excluir\n      </button>\n\n      <button\n        (click)="onVerPDF()"\n        ion-button\n        icon-left>\n        <ion-icon name="document"></ion-icon>\n        Ver PDF\n      </button>\n    </ion-row>\n  </ion-list>\n\n\n</ion-content>\n'/*ion-inline-end:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\livro\livro.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_7__ionic_native_document_viewer__["a" /* DocumentViewer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__ionic_native_document_viewer__["a" /* DocumentViewer */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_5__ionic_native_file_path__["a" /* FilePath */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__ionic_native_file_path__["a" /* FilePath */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__ionic_native_file_opener__["a" /* FileOpener */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__ionic_native_file_opener__["a" /* FileOpener */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__["c" /* DomSanitizer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__["c" /* DomSanitizer */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__services_livros__["a" /* LivroService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_livros__["a" /* LivroService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_8__ionic_native_file__["a" /* File */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__ionic_native_file__["a" /* File */]) === "function" && _h || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__["c" /* DomSanitizer */],
+            __WEBPACK_IMPORTED_MODULE_2__services_livros__["a" /* LivroService */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_5__ionic_native_file__["a" /* File */],
+            __WEBPACK_IMPORTED_MODULE_6__ionic_native_file_opener__["a" /* FileOpener */]])
     ], LivroPage);
     return LivroPage;
-    var _a, _b, _c, _d, _e, _f, _g, _h;
 }());
 
 //# sourceMappingURL=livro.js.map
@@ -477,7 +492,8 @@ var LivroPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_camera__ = __webpack_require__(103);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_date_picker__ = __webpack_require__(207);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_photo_library__ = __webpack_require__(208);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_file_chooser__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_file_path__ = __webpack_require__(106);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -493,23 +509,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var LivroRegisterPage = /** @class */ (function () {
-    function LivroRegisterPage(datePicker, camera, viewCtrl, livroService, photoLibrary) {
+    function LivroRegisterPage(datePicker, camera, viewCtrl, livroService, fileChooser, filePath) {
         this.datePicker = datePicker;
         this.camera = camera;
         this.viewCtrl = viewCtrl;
         this.livroService = livroService;
-        this.photoLibrary = photoLibrary;
+        this.fileChooser = fileChooser;
+        this.filePath = filePath;
         this.capaAtual = "https://cor-cdn-static.bibliocommons.com/assets/default_covers/icon-book-93409e4decdf10c55296c91a97ac2653.png";
+        this.pdfAtual = "";
     }
     LivroRegisterPage.prototype.ngOnInit = function () {
+        this.btnPDFcolor = "danger";
     };
     LivroRegisterPage.prototype.registerLivro = function (livro) {
         console.log(livro);
         if (this.capaAtual == "") {
             this.capaAtual = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwcIBwoICAoPCggKDxINCgoNEhQQEBIQEBQRDAwMDAwMEQwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/2wBDAQsMDBUTFSIYGCIUDg4OFBQODg4OFBEMDAwMDBERDAwMDAwMEQwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAIAAxMDAREAAhEBAxEB/8QAGgABAQEBAQEBAAAAAAAAAAAAAAEEAwUCB//EAC4QAQABAQcDBAMAAgIDAAAAAAABEQIDBBQzUaFxgcEhMbHREjJBE1IiYUKCkv/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD9CABQAAUAAFAABQAAAAUAAAAAAAAAAAFAAoBQCgFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKAUAoBQCgAAIAAAAAAAAAACAAAAAgAAAIAACAAgAAL6SBQAFAABQAAUAAFAAAAABQAAAAAAAAAAAAAKAUAoBQCgFAKAUAoCgAAAAAAAAAAAAAAAgFAKAUAoBQCgFAKAUAAAAAAAAAAAAAoCAAAAAAgAAAIAACAAgAFAPQAFAoACgAAoAAKAAACgAAAAUABQAAAAAAAAAAAAAAKAUAoBQCgFAKAUAoBQCgFAKAUAoBQCgFAKAUAoBQCgFAKAUAAAAAAAAAAAAAAAABKAAAAAAAgAAAIAACAAAgFAQAFABQAKAoAAKAACgAAAoAAAAFAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAoAAAAACAAAAAgAAIAACUABAAAAUAFABQAAAUAAFAAAABQAAAKAAAAAAoAAAAAAAAAAAFAKAUAoBQCgFAKAUAoBQCgFAKAUAoBQCgFAKAUAAAAAAAAAAABAAAAAKAAAAAAgAAAIAAACAAAAgIACAAoAKACgAoAAAKAAACgAAAAoAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAEAAABAAKAgAIACAAAAoAKACgAAoAAKAAACgAAAAAAoFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKAAgAAAAAIAAAACAAAgAIAACAAgKACgAoAKAACgAAAoAAAKAAAAAAABQAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABKAAAAAAAAAgAAAAIBQAAEABAAAQAEAABQAUAFABQAAUAAAFAAAAABQAAAAAAAAKAUAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQCgFAAAAAAAAAAAQAAAAEAAABAAAQAAEABAAQFABQAUAFAABQAAUAAAFAAAAAAABQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAEAAAABAAAQAAEABAAQAAFABQAUAFAABQAAAUAAAAFAAAAAoAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAFAAAAAAQAAAAEAABAAAQAAEABAAQFABQAUAFAABQAAUAAAFAAAAAABQAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAABAAAAAAAAQAAAEAABAAAQAEABAAAUAFABQAUAAFAABQAAAAAUAAAAAAAAAAAAFAAoBQCgFAKAUAAAAAAAAAAAAAAAAAAAoBQCgFAKAUAoAACAAAAAAAAAAAAgAAAAAIAACAAAgAAIACAgAAKCgAoAKAACgAAoAAAKAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUBAAAAAAAQAAAAEAABAAQAEABAAQFABQUAFAABQAUAAAFAAAABQAAAAAAAAAAKAUBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQCgAAAAAAAAAAAIAAAACAAAAgAAIACAAgAIAACgAoAKACgAoAAAKAAACgAAAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAACAAAAgAAIAACAAgAIACAAoKACgAoAKAAACgAAoAAAAKAAAAAAAAAABQAAAAAAAAFAAAAAAAAAAAAAAAAAABAAAAAAAKAUAAAAAAAAAABAAAAAQAAAEAABAAQAEABAAAAAUFABQAUAAFAAABQAAAUAAAAAAAFAAABxxP6R1BmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB2w37z0BpAAABAAAAAAAAAQAAAEAABAAAQA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AAAAAAAAAAAAAAAgAAAAAAAAAFQAAAAAQAAAAEAABAAAQAAEABAAQAAFABQAUAAFAABQAAAUAAAAAAAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAQAAAAEAABAAAQAEABAAQFABQAUAFAABQAAAUAAAAAFAAAAAAAAAqBUCoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFQKgVAAAAAAAAAABAAAAAQAAAEAABAAAQAEABAAAUAFABQAAUAAAFAAABQAAAAAAAKgAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJUAAAAAAAAEAAAABAKgAAgAIAACAAgAICgAoAKAACgAAoAAAKAAAAAACgVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAqACAAAAAAgAAAAIAACAAgAAIACAAAoAKACgAAAoAAAKAAAACgAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAQAAAEAABAAQAEAABAUAFABQKgAAoAAKAAAACgAAAVAAAAABQAAAAAAAAAAAKgVAqBUCoFQKgVAqBUCoFQKgVAqBUCoFQKgVAqAAAAAAAAAAACAAAAAVAAAAABAAAAQAAAEAAqACAgAIAAACgAtQAAAUAAFAAABQAAAAKgAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIABUAAAAAEAAAABAAAQAAEqACAAAgLAHQAFAABQAAUAAAFAAAAAqACgAAAAAAAAAAAAAAVAqBUCoFQKgVAqBUCoFQKgVAqBUCoFQKgVAqBUCoFQKgVAqAAAAAAAAAAAAAAAACVAAAAAABAAAAQAAEAABAAQAD2AqACgAAoAAKAACgAAAAAoAAAAAAAAAAAAAFQKgVAqBUCoFQKgVBQAAAAAAAAAAAAAAAQCoFQKgVAqBUCoFQKgAAAAAAAAAAAAVBAAAAAAQAAAEAABAAQACoFIBAAUAAFAABQAAUAAAAFAAAAAAAAAAABQAKgVAqBUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACoFQKgVAqAACAAAAAAAAAAAgAAAAIAAACAAAgAIAAD/9k=';
         }
-        this.livroService.addLivro({ id: this.livroService.getProximoId(), capa: this.capaAtual, titulo: livro.titulo, autor: livro.autor, dtLancamento: livro.dtLancamento, pdf: livro.pdf });
+        this.livroService.addLivro({ id: this.livroService.getProximoId(), capa: this.capaAtual, titulo: livro.titulo, autor: livro.autor, dtLancamento: livro.dtLancamento, pdf: this.pdfAtual });
         console.log(this.livroService.getAllLivros());
         this.viewCtrl.dismiss();
     };
@@ -563,16 +583,27 @@ var LivroRegisterPage = /** @class */ (function () {
         this.capaAtual = img64;
     };
     LivroRegisterPage.prototype.onAdicionarPDF = function () {
+        var _this = this;
+        this.fileChooser.open()
+            .then(function (uri) {
+            console.log('Relative Path: ' + uri);
+            _this.filePath.resolveNativePath(uri).then(function (resolvedFilePath) {
+                console.log('Real Path: ' + resolvedFilePath);
+                _this.pdfAtual = resolvedFilePath;
+            });
+        })
+            .catch(function (e) { return console.log(e); });
     };
     LivroRegisterPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-livro-register',template:/*ion-inline-start:"C:\Users\Rodrigo\ionic\TestProject\src\pages\livro-register\livro-register.html"*/'<ion-header>\n  <ion-navbar>\n\n\n    <ion-buttons left>\n      <button ion-button icon-only (click)="dismiss()">\n        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>\n      </button>\n    </ion-buttons>\n\n    <ion-title>\n      Cadastre um Livro\n    </ion-title>\n\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content class="contentMain">\n  <ion-card>\n    <ion-card-content>\n      <ion-row justify-content-center padding>\n        <img\n          style="max-height: 200px; width:auto"\n          src="{{this.capaAtual}}"/>\n      </ion-row>\n      <ion-row justify-content-center>\n        <button\n\n          ion-button\n          (click)="onMudarCapaCamera()"\n          icon-only>\n          <ion-icon name="camera"></ion-icon>\n        </button>\n        <button\n\n          ion-button\n          (click)="onMudarCapaGaleria()"\n          icon-only>\n          <ion-icon name="image"></ion-icon>\n        </button>\n      </ion-row>\n\n      <ion-row justify-content-center>\n        <button\n          outline\n          ion-button\n          (click)="onAdicionarPDF()"\n          icon-left>\n          <ion-icon name="document"></ion-icon>\n          Adicionar PDF\n        </button>\n      </ion-row>\n\n      <form (ngSubmit)="registerLivro(f.value)" #f="ngForm">\n        <ion-row style="border-bottom: 1px solid #cccccc">\n          <ion-col>\n            <ion-list inset>\n\n              <ion-item>\n                <ion-input type="text" placeholder="Título" name="titulo" ngModel required></ion-input>\n              </ion-item>\n\n              <ion-item>\n                <ion-input type="text" placeholder="Autor" name="autor" ngModel required></ion-input>\n              </ion-item>\n\n              <ion-item>\n                <ion-label>Data de Lançamento</ion-label> <ion-datetime placeholder="02/02/2018" name="dtLancamento" displayFormat="DD/MM/YYYY" ngModel required></ion-datetime>\n              </ion-item>\n\n            </ion-list>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col class="signup-col">\n            <button ion-button class="submit-btn" full type="submit" [disabled]="!f.valid">Adicionar novo livro</button>\n          </ion-col>\n        </ion-row>\n\n      </form>\n    </ion-card-content>\n  </ion-card>\n\n</ion-content>\n'/*ion-inline-end:"C:\Users\Rodrigo\ionic\TestProject\src\pages\livro-register\livro-register.html"*/,
+            selector: 'page-livro-register',template:/*ion-inline-start:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\livro-register\livro-register.html"*/'<ion-header>\n  <ion-navbar>\n\n\n    <ion-buttons left>\n      <button ion-button icon-only (click)="dismiss()">\n        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>\n      </button>\n    </ion-buttons>\n\n    <ion-title>\n      Cadastre um Livro\n    </ion-title>\n\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content class="contentMain">\n  <ion-card>\n    <ion-card-content>\n      <ion-row justify-content-center padding>\n        <img\n          style="max-height: 200px; width:auto"\n          src="{{this.capaAtual}}"/>\n      </ion-row>\n      <ion-row justify-content-center>\n        <button\n\n          ion-button\n          (click)="onMudarCapaCamera()"\n          icon-only>\n          <ion-icon name="camera"></ion-icon>\n        </button>\n        <button\n          ion-button\n          (click)="onMudarCapaGaleria()"\n          icon-only>\n          <ion-icon name="image"></ion-icon>\n        </button>\n\n        <button\n          [outline]="pdfAtual === \'\'"\n          ion-button\n          (click)="onAdicionarPDF()"\n          icon-only\n          [color]="btnPDFcolor">\n          <ion-icon name="document"></ion-icon>\n        </button>\n\n      </ion-row>\n\n\n      <form (ngSubmit)="registerLivro(f.value)" #f="ngForm">\n        <ion-row style="border-bottom: 1px solid #cccccc">\n          <ion-col>\n            <ion-list inset>\n\n              <ion-item>\n                <ion-input type="text" placeholder="Título" name="titulo" ngModel required></ion-input>\n              </ion-item>\n\n              <ion-item>\n                <ion-input type="text" placeholder="Autor" name="autor" ngModel required></ion-input>\n              </ion-item>\n\n              <ion-item>\n                <ion-label>Data de Lançamento</ion-label> <ion-datetime placeholder="02/02/2018" name="dtLancamento" displayFormat="DD/MM/YYYY" ngModel required></ion-datetime>\n              </ion-item>\n\n            </ion-list>\n          </ion-col>\n        </ion-row>\n\n        <ion-row>\n          <ion-col class="signup-col">\n            <button ion-button class="submit-btn" full type="submit" [disabled]="!f.valid">Adicionar novo livro</button>\n          </ion-col>\n        </ion-row>\n\n      </form>\n    </ion-card-content>\n  </ion-card>\n\n</ion-content>\n'/*ion-inline-end:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\livro-register\livro-register.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4__ionic_native_date_picker__["a" /* DatePicker */],
             __WEBPACK_IMPORTED_MODULE_3__ionic_native_camera__["a" /* Camera */],
             __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["h" /* ViewController */],
             __WEBPACK_IMPORTED_MODULE_1__services_livros__["a" /* LivroService */],
-            __WEBPACK_IMPORTED_MODULE_5__ionic_native_photo_library__["a" /* PhotoLibrary */]])
+            __WEBPACK_IMPORTED_MODULE_5__ionic_native_file_chooser__["a" /* FileChooser */],
+            __WEBPACK_IMPORTED_MODULE_6__ionic_native_file_path__["a" /* FilePath */]])
     ], LivroRegisterPage);
     return LivroRegisterPage;
 }());
@@ -581,13 +612,13 @@ var LivroRegisterPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 209:
+/***/ 208:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(210);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(232);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(231);
 
 
 Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_module__["a" /* AppModule */]);
@@ -595,7 +626,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 232:
+/***/ 231:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -603,31 +634,29 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_component__ = __webpack_require__(275);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_splash_screen__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_status_bar__ = __webpack_require__(194);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_google_plus__ = __webpack_require__(286);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_file_chooser__ = __webpack_require__(204);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_date_picker__ = __webpack_require__(207);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ionic_native_file_path__ = __webpack_require__(203);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_file_opener__ = __webpack_require__(202);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ionic_native_photo_library__ = __webpack_require__(208);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ionic_native_image_picker__ = __webpack_require__(287);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_login_login__ = __webpack_require__(288);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_shopList_shopList__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_shopRegister_shopRegister__ = __webpack_require__(199);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_livro_livro__ = __webpack_require__(201);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_lista_livros_lista_livros__ = __webpack_require__(200);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__services_livros__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_tabs_tabs__ = __webpack_require__(197);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__services_shops__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pages_livro_register_livro_register__ = __webpack_require__(206);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__pages_livro_edit_livro_edit__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__pages_login_loginForm__ = __webpack_require__(289);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__ionic_native_file__ = __webpack_require__(290);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__ionic_native_file_transfer__ = __webpack_require__(291);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__ionic_native_document_viewer__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_component__ = __webpack_require__(274);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_camera__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_file_chooser__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_date_picker__ = __webpack_require__(207);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_file_opener__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_image_picker__ = __webpack_require__(285);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_dialogs__ = __webpack_require__(286);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ionic_native_document_viewer__ = __webpack_require__(287);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_file__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ionic_native_status_bar__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_login_login__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_shopList_shopList__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_shopRegister_shopRegister__ = __webpack_require__(202);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_livro_livro__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_lista_livros_lista_livros__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__services_livros__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pages_tabs_tabs__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__services_shops__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_livro_register_livro_register__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pages_livro_edit_livro_edit__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__pages_login_loginForm__ = __webpack_require__(289);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__ionic_native_splash_screen__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__ionic_native_file_path__ = __webpack_require__(106);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -640,7 +669,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 //IONIC NATIVE IMPORTS
-
 
 
 
@@ -664,23 +692,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_24__pages_login_loginForm__["a" /* FormsPage */],
+                __WEBPACK_IMPORTED_MODULE_23__pages_login_loginForm__["a" /* FormsPage */],
                 __WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* MyApp */],
-                __WEBPACK_IMPORTED_MODULE_14__pages_login_login__["a" /* LoginPage */],
-                __WEBPACK_IMPORTED_MODULE_15__pages_shopList_shopList__["a" /* ShopListPage */],
-                __WEBPACK_IMPORTED_MODULE_16__pages_shopRegister_shopRegister__["a" /* ShopRegisterPage */],
-                __WEBPACK_IMPORTED_MODULE_17__pages_livro_livro__["a" /* LivroPage */],
-                __WEBPACK_IMPORTED_MODULE_22__pages_livro_register_livro_register__["a" /* LivroRegisterPage */],
-                __WEBPACK_IMPORTED_MODULE_18__pages_lista_livros_lista_livros__["a" /* ListaLivrosPage */],
-                __WEBPACK_IMPORTED_MODULE_20__pages_tabs_tabs__["a" /* TabsPage */],
-                __WEBPACK_IMPORTED_MODULE_23__pages_livro_edit_livro_edit__["a" /* LivroEditPage */]
+                __WEBPACK_IMPORTED_MODULE_13__pages_login_login__["a" /* LoginPage */],
+                __WEBPACK_IMPORTED_MODULE_14__pages_shopList_shopList__["a" /* ShopListPage */],
+                __WEBPACK_IMPORTED_MODULE_15__pages_shopRegister_shopRegister__["a" /* ShopRegisterPage */],
+                __WEBPACK_IMPORTED_MODULE_16__pages_livro_livro__["a" /* LivroPage */],
+                __WEBPACK_IMPORTED_MODULE_21__pages_livro_register_livro_register__["a" /* LivroRegisterPage */],
+                __WEBPACK_IMPORTED_MODULE_17__pages_lista_livros_lista_livros__["a" /* ListaLivrosPage */],
+                __WEBPACK_IMPORTED_MODULE_19__pages_tabs_tabs__["a" /* TabsPage */],
+                __WEBPACK_IMPORTED_MODULE_22__pages_livro_edit_livro_edit__["a" /* LivroEditPage */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -690,34 +717,32 @@ var AppModule = /** @class */ (function () {
             ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["a" /* IonicApp */]],
             entryComponents: [
-                __WEBPACK_IMPORTED_MODULE_24__pages_login_loginForm__["a" /* FormsPage */],
+                __WEBPACK_IMPORTED_MODULE_23__pages_login_loginForm__["a" /* FormsPage */],
                 __WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* MyApp */],
-                __WEBPACK_IMPORTED_MODULE_14__pages_login_login__["a" /* LoginPage */],
-                __WEBPACK_IMPORTED_MODULE_15__pages_shopList_shopList__["a" /* ShopListPage */],
-                __WEBPACK_IMPORTED_MODULE_16__pages_shopRegister_shopRegister__["a" /* ShopRegisterPage */],
-                __WEBPACK_IMPORTED_MODULE_17__pages_livro_livro__["a" /* LivroPage */],
-                __WEBPACK_IMPORTED_MODULE_22__pages_livro_register_livro_register__["a" /* LivroRegisterPage */],
-                __WEBPACK_IMPORTED_MODULE_18__pages_lista_livros_lista_livros__["a" /* ListaLivrosPage */],
-                __WEBPACK_IMPORTED_MODULE_20__pages_tabs_tabs__["a" /* TabsPage */],
-                __WEBPACK_IMPORTED_MODULE_23__pages_livro_edit_livro_edit__["a" /* LivroEditPage */]
+                __WEBPACK_IMPORTED_MODULE_13__pages_login_login__["a" /* LoginPage */],
+                __WEBPACK_IMPORTED_MODULE_14__pages_shopList_shopList__["a" /* ShopListPage */],
+                __WEBPACK_IMPORTED_MODULE_15__pages_shopRegister_shopRegister__["a" /* ShopRegisterPage */],
+                __WEBPACK_IMPORTED_MODULE_16__pages_livro_livro__["a" /* LivroPage */],
+                __WEBPACK_IMPORTED_MODULE_21__pages_livro_register_livro_register__["a" /* LivroRegisterPage */],
+                __WEBPACK_IMPORTED_MODULE_17__pages_lista_livros_lista_livros__["a" /* ListaLivrosPage */],
+                __WEBPACK_IMPORTED_MODULE_19__pages_tabs_tabs__["a" /* TabsPage */],
+                __WEBPACK_IMPORTED_MODULE_22__pages_livro_edit_livro_edit__["a" /* LivroEditPage */]
             ],
             providers: [
-                __WEBPACK_IMPORTED_MODULE_5__ionic_native_status_bar__["a" /* StatusBar */],
-                __WEBPACK_IMPORTED_MODULE_4__ionic_native_splash_screen__["a" /* SplashScreen */],
                 { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* IonicErrorHandler */] },
-                __WEBPACK_IMPORTED_MODULE_6__ionic_native_google_plus__["a" /* GooglePlus */],
-                __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera__["a" /* Camera */],
-                __WEBPACK_IMPORTED_MODULE_19__services_livros__["a" /* LivroService */],
-                __WEBPACK_IMPORTED_MODULE_21__services_shops__["a" /* ShopService */],
-                __WEBPACK_IMPORTED_MODULE_8__ionic_native_file_chooser__["a" /* FileChooser */],
-                __WEBPACK_IMPORTED_MODULE_9__ionic_native_date_picker__["a" /* DatePicker */],
-                __WEBPACK_IMPORTED_MODULE_10__ionic_native_file_path__["a" /* FilePath */],
-                __WEBPACK_IMPORTED_MODULE_11__ionic_native_file_opener__["a" /* FileOpener */],
-                __WEBPACK_IMPORTED_MODULE_12__ionic_native_photo_library__["a" /* PhotoLibrary */],
-                __WEBPACK_IMPORTED_MODULE_13__ionic_native_image_picker__["a" /* ImagePicker */],
-                __WEBPACK_IMPORTED_MODULE_25__ionic_native_file__["a" /* File */],
-                __WEBPACK_IMPORTED_MODULE_26__ionic_native_file_transfer__["a" /* FileTransfer */],
-                __WEBPACK_IMPORTED_MODULE_27__ionic_native_document_viewer__["a" /* DocumentViewer */]
+                __WEBPACK_IMPORTED_MODULE_4__ionic_native_camera__["a" /* Camera */],
+                __WEBPACK_IMPORTED_MODULE_18__services_livros__["a" /* LivroService */],
+                __WEBPACK_IMPORTED_MODULE_20__services_shops__["a" /* ShopService */],
+                __WEBPACK_IMPORTED_MODULE_5__ionic_native_file_chooser__["a" /* FileChooser */],
+                __WEBPACK_IMPORTED_MODULE_6__ionic_native_date_picker__["a" /* DatePicker */],
+                __WEBPACK_IMPORTED_MODULE_8__ionic_native_image_picker__["a" /* ImagePicker */],
+                __WEBPACK_IMPORTED_MODULE_11__ionic_native_file__["a" /* File */],
+                __WEBPACK_IMPORTED_MODULE_10__ionic_native_document_viewer__["a" /* DocumentViewer */],
+                __WEBPACK_IMPORTED_MODULE_9__ionic_native_dialogs__["a" /* Dialogs */],
+                __WEBPACK_IMPORTED_MODULE_12__ionic_native_status_bar__["a" /* StatusBar */],
+                __WEBPACK_IMPORTED_MODULE_24__ionic_native_splash_screen__["a" /* SplashScreen */],
+                __WEBPACK_IMPORTED_MODULE_7__ionic_native_file_opener__["a" /* FileOpener */],
+                __WEBPACK_IMPORTED_MODULE_25__ionic_native_file_path__["a" /* FilePath */]
             ]
         })
     ], AppModule);
@@ -728,16 +753,16 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 275:
+/***/ 274:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(194);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_tabs_tabs__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_tabs_tabs__ = __webpack_require__(200);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -763,7 +788,7 @@ var MyApp = /** @class */ (function () {
         });
     }
     MyApp = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\Users\Rodrigo\ionic\TestProject\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n\n'/*ion-inline-end:"C:\Users\Rodrigo\ionic\TestProject\src\app\app.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\Users\Marcos\Desktop\testProjectIonic\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"C:\Users\Marcos\Desktop\testProjectIonic\src\app\app.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* Platform */],
             __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */],
@@ -776,7 +801,7 @@ var MyApp = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 284:
+/***/ 283:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -807,7 +832,7 @@ var MyApp = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 285:
+/***/ 284:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -826,7 +851,7 @@ var MyApp = /** @class */ (function () {
         titulo: 'A Revolução dos Bichos',
         autor: 'George Orwell',
         dtLancamento: "18/04/1968",
-        pdf: null
+        pdf: ''
     },
     {
         id: 3,
@@ -834,7 +859,7 @@ var MyApp = /** @class */ (function () {
         titulo: '1984',
         autor: 'George Orwell',
         dtLancamento: "18/04/1968",
-        pdf: null
+        pdf: ''
     },
     {
         id: 4,
@@ -842,7 +867,7 @@ var MyApp = /** @class */ (function () {
         titulo: 'Laranja Mecânica',
         autor: 'Brugees',
         dtLancamento: "18/04/1968",
-        pdf: null
+        pdf: ''
     }
 ]);
 //# sourceMappingURL=livros.js.map
@@ -873,7 +898,7 @@ var LoginPage = /** @class */ (function () {
     }
     LoginPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-login',template:/*ion-inline-start:"C:\Users\Rodrigo\ionic\TestProject\src\pages\login\login.html"*/'<ion-content class="contentMain" padding>\n  <ion-row class="logo-row">\n    <ion-col></ion-col>\n    <ion-col class="imgCol" width-67>\n      <img src="../assets/imgs/bookLogo2.png"/>\n    </ion-col>\n    <ion-col></ion-col>\n  </ion-row>\n  <div class="loginBox">\n\n    <ion-card>\n      <ion-card-content>\n        <form (ngSubmit)="loginRegular(f)" #f="ngForm">\n          <ion-row style="border-bottom: 1px solid #cccccc">\n            <ion-col>\n              <ion-list inset>\n\n                <ion-item>\n                  <ion-input\n                    type="email"\n                    email\n                    [(ngModel)]="email"\n                    placeholder="Email"\n                    name="email"\n                    required></ion-input>\n                </ion-item>\n\n                <ion-item>\n                  <ion-input\n                    type="password"\n                    placeholder="Senha"\n                    name="password"\n                    ngModel\n                    required></ion-input>\n                </ion-item>\n\n              </ion-list>\n            </ion-col>\n          </ion-row>\n\n          <ion-row>\n            <ion-col class="signup-col">\n              <button\n                ion-button\n                class="submit-btn"\n                full\n                type="submit"\n                (click)="onLogin()"\n                [disabled]="!f.valid">Login</button>\n\n              <button\n                ion-button\n                class="register-btn"\n                block\n                clear>Criar nova conta</button>\n            </ion-col>\n          </ion-row>\n\n      </form>\n      </ion-card-content>\n    </ion-card>\n\n    <ion-row>\n      <ion-col  style="display:block; margin: 0 auto" class="signup-col" col-auto>\n        <p style="color:#ffffffbb"> Ou autentique-se com </p>\n        <div style="display:flex; justify-content: center;">\n          <button style="background-color: #ffffffbb; color:#333388ff" ion-button icon-only>\n            <ion-icon name="logo-facebook"></ion-icon>\n          </button>\n\n          <button style="background-color: #ffffffbb; color:#333388ff" ion-button round icon-only>\n            <ion-icon name="logo-google"></ion-icon>\n          </button>\n        </div>\n      </ion-col>\n    </ion-row>\n  </div>\n\n\n</ion-content>\n'/*ion-inline-end:"C:\Users\Rodrigo\ionic\TestProject\src\pages\login\login.html"*/
+            selector: 'page-login',template:/*ion-inline-start:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\login\login.html"*/'<ion-content class="contentMain" padding>\n\n  <ion-row class="logo-row">\n\n    <ion-col></ion-col>\n\n    <ion-col class="imgCol" width-67>\n\n      <img src="../assets/imgs/bookLogo2.png"/>\n\n    </ion-col>\n\n    <ion-col></ion-col>\n\n  </ion-row>\n\n  <div class="loginBox">\n\n\n\n    <ion-card>\n\n      <ion-card-content>\n\n        <form (ngSubmit)="loginRegular(f)" #f="ngForm">\n\n          <ion-row style="border-bottom: 1px solid #cccccc">\n\n            <ion-col>\n\n              <ion-list inset>\n\n\n\n                <ion-item>\n\n                  <ion-input\n\n                    type="email"\n\n                    email\n\n                    [(ngModel)]="email"\n\n                    placeholder="Email"\n\n                    name="email"\n\n                    required></ion-input>\n\n                </ion-item>\n\n\n\n                <ion-item>\n\n                  <ion-input\n\n                    type="password"\n\n                    placeholder="Senha"\n\n                    name="password"\n\n                    ngModel\n\n                    required></ion-input>\n\n                </ion-item>\n\n\n\n              </ion-list>\n\n            </ion-col>\n\n          </ion-row>\n\n\n\n          <ion-row>\n\n            <ion-col class="signup-col">\n\n              <button\n\n                ion-button\n\n                class="submit-btn"\n\n                full\n\n                type="submit"\n\n                (click)="onLogin()"\n\n                [disabled]="!f.valid">Login</button>\n\n\n\n              <button\n\n                ion-button\n\n                class="register-btn"\n\n                block\n\n                clear>Criar nova conta</button>\n\n            </ion-col>\n\n          </ion-row>\n\n\n\n      </form>\n\n      </ion-card-content>\n\n    </ion-card>\n\n\n\n    <ion-row>\n\n      <ion-col  style="display:block; margin: 0 auto" class="signup-col" col-auto>\n\n        <p style="color:#ffffffbb"> Ou autentique-se com </p>\n\n        <div style="display:flex; justify-content: center;">\n\n          <button style="background-color: #ffffffbb; color:#333388ff" ion-button icon-only>\n\n            <ion-icon name="logo-facebook"></ion-icon>\n\n          </button>\n\n\n\n          <button style="background-color: #ffffffbb; color:#333388ff" ion-button round icon-only>\n\n            <ion-icon name="logo-google"></ion-icon>\n\n          </button>\n\n        </div>\n\n      </ion-col>\n\n    </ion-row>\n\n  </div>\n\n\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\Marcos\Desktop\testProjectIonic\src\pages\login\login.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */]])
     ], LoginPage);
@@ -921,7 +946,7 @@ var FormsPage = /** @class */ (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LivroService; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_livros__ = __webpack_require__(285);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__data_livros__ = __webpack_require__(284);
 
 var LivroService = /** @class */ (function () {
     function LivroService() {
@@ -958,5 +983,5 @@ var LivroService = /** @class */ (function () {
 
 /***/ })
 
-},[209]);
+},[208]);
 //# sourceMappingURL=main.js.map

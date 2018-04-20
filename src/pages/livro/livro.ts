@@ -3,11 +3,9 @@ import { NavController, NavParams } from 'ionic-angular';
 import {Livro} from "../../data/livroInterface";
 import {LivroService} from "../../services/livros";
 import { DomSanitizer } from '@angular/platform-browser';
-import { FileOpener } from '@ionic-native/file-opener';
-import { FilePath } from '@ionic-native/file-path';
 import {LivroEditPage} from "../livro-edit/livro-edit";
-import {DocumentViewer, DocumentViewerOptions} from "@ionic-native/document-viewer";
 import {File} from "@ionic-native/file";
+import {FileOpener} from "@ionic-native/file-opener";
 
 
 
@@ -21,14 +19,12 @@ export class LivroPage {
   livro: Livro;
 
   constructor(
-    private document: DocumentViewer,
-    private filePath: FilePath,
-    private fileOpener: FileOpener,
-    private _DomSanitizationService: DomSanitizer,
+    public domSanitizationService: DomSanitizer,
     public livrosService: LivroService,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public file: File) {
+    public file: File,
+    public fileOpener: FileOpener) {
   }
 
   ngOnInit(){
@@ -36,23 +32,16 @@ export class LivroPage {
   }
 
   onVerPDF(){
-    const options: DocumentViewerOptions = {
-      title: this.livro.titulo
-    }
-    this.document.viewDocument(this.file.applicationDirectory+this.livro.pdf, 'application/pdf',options);
+
+    //SÓ FUNCIONA NO ANDROID
+    this.fileOpener.open(this.livro.pdf, 'application/pdf').then(value =>{
+      console.log('File exists and is beeing opened...');
+    }).catch(err =>console.log('error on opening the file ->' + err));
+
+    //SÓ FUNCIONA NO IOS
+    //TODO
   }
 
-  // openPath(){
-  //   this.filePath.resolveNativePath(this.livro.pdf)
-  //     .then(filePath =>this.openPDF(filePath))
-  //     .catch(err => console.log(err));
-  // }
-
-  // openPDF(path){
-  //   this.fileOpener.open(path, 'application/pdf')
-  //     .then(() => console.log('File is opened'))
-  //     .catch(e => console.log('Error opening file', e));
-  // }
 
   deleteLivro(id:number){
     console.log(id + "vddd");
@@ -63,5 +52,9 @@ export class LivroPage {
   editLivro() {
     this.navCtrl.push(LivroEditPage, {livro: this.livro});
 
+  }
+
+  sanitizeBase64(capa: string) {
+    this.domSanitizationService.bypassSecurityTrustUrl(capa);
   }
 }

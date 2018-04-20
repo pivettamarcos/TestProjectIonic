@@ -6,17 +6,15 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 //IONIC NATIVE IMPORTS
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { StatusBar } from '@ionic-native/status-bar';
-import { GooglePlus } from '@ionic-native/google-plus';
 import { Camera } from '@ionic-native/camera';
 import {FileChooser} from '@ionic-native/file-chooser';
 import { DatePicker } from '@ionic-native/date-picker';
-import {FilePath} from "@ionic-native/file-path";
 import { FileOpener } from '@ionic-native/file-opener';
-import { PhotoLibrary } from '@ionic-native/photo-library';
 import { ImagePicker } from '@ionic-native/image-picker';
-
+import { Dialogs } from '@ionic-native/dialogs';
+import {DocumentViewer} from "@ionic-native/document-viewer";
+import {File} from "@ionic-native/file";
+import {StatusBar} from "@ionic-native/status-bar";
 
 
 //PAGE IMPORTS
@@ -31,9 +29,8 @@ import {ShopService} from "../services/shops";
 import {LivroRegisterPage} from "../pages/livro-register/livro-register";
 import {LivroEditPage} from "../pages/livro-edit/livro-edit";
 import {FormsPage} from "../pages/login/loginForm";
-import {File} from "@ionic-native/file";
-import {FileTransfer} from "@ionic-native/file-transfer";
-import {DocumentViewer} from "@ionic-native/document-viewer";
+import {SplashScreen} from "@ionic-native/splash-screen";
+import {FilePath} from "@ionic-native/file-path";
 
 
 
@@ -69,22 +66,20 @@ import {DocumentViewer} from "@ionic-native/document-viewer";
     LivroEditPage
   ],
   providers: [
-    StatusBar,
-    SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    GooglePlus,
     Camera,
     LivroService,
     ShopService,
     FileChooser,
     DatePicker,
-    FilePath,
-    FileOpener,
-    PhotoLibrary,
     ImagePicker,
     File,
-    FileTransfer,
-    DocumentViewer
+    DocumentViewer,
+    Dialogs,
+    StatusBar,
+    SplashScreen,
+    FileOpener,
+    FilePath
   ]
 })
 export class AppModule {}
