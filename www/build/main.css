@@ -39839,6 +39839,10 @@ page-lista-livros ion-toolbar {
   max-width: 800px;
 }
 
+page-lista-livros ion-header {
+  background: white;
+}
+
 page-livro-register ion-datetime {
   padding: 0 !important;
 }

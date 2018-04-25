@@ -6,6 +6,8 @@ import {LivroPage} from "../livro/livro";
 import {LivroRegisterPage} from '../livro-register/livro-register';
 import {LivroEditPage} from "../livro-edit/livro-edit";
 import {DomSanitizer} from "@angular/platform-browser";
+import { ActionSheetController } from 'ionic-angular'
+
 
 @Component({
   selector: 'page-lista-livros',
@@ -18,16 +20,15 @@ export class ListaLivrosPage {
     public navCtrl: NavController,
     public modalCtrl: ModalController,
     private livrosService: LivroService,
-    private domSanitizationService: DomSanitizer) {
+    private domSanitizationService: DomSanitizer,
+    private actionSheetCtrl: ActionSheetController) {
   }
 
   ngOnInit(){
     this.livros = this.livrosService.getAllLivros();
   }
 
-  onVerMais(event: Event, id: number) {
-    event.stopPropagation();
-
+  onVerMais( id: number) {
     this.navCtrl.push(LivroPage,{livro: this.livrosService.getLivro(id)});
   }
 
@@ -82,5 +83,32 @@ export class ListaLivrosPage {
 
   sanitizeBase64(capa: string) {
     this.domSanitizationService.bypassSecurityTrustUrl(capa);
+  }
+
+  mostrarOpcoes(id: number) {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Opções',
+      buttons: [
+        {
+          text: 'Excluir',
+          role: 'destructive',
+          handler: () => {
+            this.deleteLivro(id);
+          }
+        },
+        {
+          text: 'Editar',
+          handler: () => {
+            this.editarLivro(id);
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    actionSheet.present();
   }
 }

@@ -8,61 +8,42 @@
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
-
   </ion-navbar>
+
+<ion-toolbar>
+  <ion-searchbar
+    placeholder="Procurar"
+    [(ngModel)]="myInput"
+    [showCancelButton]="shouldShowCancel"
+    (ionInput)="filterItems($event)"
+    (ionCancel)="onCancel($event)">
+  </ion-searchbar>
+</ion-toolbar>
+
 
 </ion-header>
 
 
 <ion-content padding class="contentMain">
 
-  <ion-toolbar padding>
-    <ion-searchbar
-      placeholder="Procurar"
-      [(ngModel)]="myInput"
-      [showCancelButton]="shouldShowCancel"
-      (ionInput)="filterItems($event)"
-      (ionCancel)="onCancel($event)">
-    </ion-searchbar>
-  </ion-toolbar>
-
   <ion-list>
+    <ion-item
+      *ngFor="let livro of livros">
 
-    <ion-item-sliding *ngFor="let livro of livros">
-    <ion-item>
-
-      <ion-thumbnail item-start>
+      <ion-thumbnail
+        item-start
+        (click)="onVerMais(livro.id)">
         <img [src]="domSanitizationService.bypassSecurityTrustUrl(livro.capa)">
       </ion-thumbnail>
 
-      <h2> {{livro.titulo}}</h2>
-      <p>{{livro.autor}}</p>
+      <h2 (click)="onVerMais(livro.id)"> {{livro.titulo}}</h2>
+      <p (click)="onVerMais(livro.id)">{{livro.autor}}</p>
 
-      <button ion-button clear small item-end (click)="onVerMais($event,livro.id)">
-        Ver
+      <button ion-button clear item-end icon-only (click)="mostrarOpcoes(livro.id)">
+        <ion-icon name="more"></ion-icon>
       </button>
 
     </ion-item>
-      <ion-item-options side="right">
-
-        <button
-          ion-button
-          (click)="editarLivro(livro.id)">
-          <ion-icon name="create"></ion-icon>
-          Editar
-        </button>
-
-        <button
-          ion-button
-          color="danger"
-          (click)="deleteLivro(livro.id)">
-          <ion-icon name="trash"></ion-icon>
-          Excluir
-        </button>
-
-      </ion-item-options>
-    </ion-item-sliding>
-
   </ion-list>
 
 
