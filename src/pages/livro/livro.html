@@ -41,10 +41,13 @@
 
       <button
         (click)="onVerPDF()"
+        [disabled] = "pdfAvailable"
         ion-button
-        icon-left>
-        <ion-icon name="document"></ion-icon>
+        icon-only
+        icon-right
+      style="padding-left: 10px">
         Ver PDF
+        <ion-icon name="document"></ion-icon>
       </button>
     </ion-row>
   </ion-list>

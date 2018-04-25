@@ -21,7 +21,7 @@ import {FilePath} from "@ionic-native/file-path";
 export class LivroEditPage {
 
   livro: Livro;
-  corIconeLivro: string;
+  outlineIconeLivro: boolean;
 
   constructor(
     private domSanitizationService: DomSanitizer ,
@@ -42,6 +42,7 @@ export class LivroEditPage {
         this.filePath.resolveNativePath(uri).then(resolvedFilePath =>{
           console.log('Real Path: '+ resolvedFilePath);
           this.livro.pdf = resolvedFilePath;
+          this.outlineIconeLivro = false;
         });
       })
       .catch(e => console.log(e));
@@ -52,9 +53,9 @@ export class LivroEditPage {
     this.livro = this.navParams.get('livro');
 
     if(this.livro.pdf === "" || this.livro.pdf === null)
-      this.corIconeLivro = "danger";
+      this.outlineIconeLivro = true;
     else
-      this.corIconeLivro = "verdeOk"
+      this.outlineIconeLivro = false;
 
   }
   ngOnInit(){
@@ -86,6 +87,27 @@ export class LivroEditPage {
     }, (err) => {
       // Handle error
       console.log("erro ao capturar imagen");
+      console.log(err);
+    });
+  }
+
+  onMudarCapaGaleria() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      saveToPhotoAlbum: false
+      // encodingType: this.camera.EncodingType.JPEG,
+      // mediaType: this.camera.MediaType.PICTURE
+    };
+
+    this.camera.getPicture(options).then((imageData) => {
+      let base64Image = 'data:image/jpeg;base64,' + imageData;
+      this.mudarImagemCapa(base64Image);
+
+    }, (err) => {
+      // Handle error
+      console.log("erro ao capturar imagem");
       console.log(err);
     });
   }

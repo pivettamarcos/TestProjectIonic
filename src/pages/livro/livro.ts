@@ -17,6 +17,8 @@ import {FileOpener} from "@ionic-native/file-opener";
 export class LivroPage {
 
   livro: Livro;
+  pdfAvailable: boolean;
+
 
   constructor(
     public domSanitizationService: DomSanitizer,
@@ -27,8 +29,16 @@ export class LivroPage {
     public fileOpener: FileOpener) {
   }
 
+  ionViewDidLoad(){
+    if(this.livro.pdf === "" || this.livro.pdf === null)
+      this.pdfAvailable = true;
+    else
+      this.pdfAvailable = false;
+
+  }
+
   ngOnInit(){
-    this.livro = this.navParams.data;
+    this.livro = this.navParams.get('livro');
   }
 
   onVerPDF(){

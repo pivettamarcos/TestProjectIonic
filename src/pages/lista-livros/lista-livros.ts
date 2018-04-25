@@ -25,8 +25,10 @@ export class ListaLivrosPage {
     this.livros = this.livrosService.getAllLivros();
   }
 
-  onVerMais(id: number) {
-    this.navCtrl.push(LivroPage,this.livrosService.getLivro(id));
+  onVerMais(event: Event, id: number) {
+    event.stopPropagation();
+
+    this.navCtrl.push(LivroPage,{livro: this.livrosService.getLivro(id)});
   }
 
   deleteLivro(id:number){

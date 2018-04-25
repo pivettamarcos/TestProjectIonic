@@ -38,12 +38,12 @@
       <h2> {{livro.titulo}}</h2>
       <p>{{livro.autor}}</p>
 
-      <button ion-button clear small item-end (click)="onVerMais(livro.id)">
+      <button ion-button clear small item-end (click)="onVerMais($event,livro.id)">
         Ver
       </button>
 
     </ion-item>
-      <ion-item-options>
+      <ion-item-options side="right">
 
         <button
           ion-button

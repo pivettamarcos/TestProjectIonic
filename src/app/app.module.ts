@@ -15,7 +15,12 @@ import { Dialogs } from '@ionic-native/dialogs';
 import {DocumentViewer} from "@ionic-native/document-viewer";
 import {File} from "@ionic-native/file";
 import {StatusBar} from "@ionic-native/status-bar";
+import {SplashScreen} from "@ionic-native/splash-screen";
+import {FilePath} from "@ionic-native/file-path";
 
+//EXTERNAL IMPORTS
+import "froala-editor/js/froala_editor.pkgd.min.js";
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 
 //PAGE IMPORTS
 import { LoginPage } from '../pages/login/login';
@@ -29,8 +34,7 @@ import {ShopService} from "../services/shops";
 import {LivroRegisterPage} from "../pages/livro-register/livro-register";
 import {LivroEditPage} from "../pages/livro-edit/livro-edit";
 import {FormsPage} from "../pages/login/loginForm";
-import {SplashScreen} from "@ionic-native/splash-screen";
-import {FilePath} from "@ionic-native/file-path";
+
 
 
 
@@ -49,6 +53,8 @@ import {FilePath} from "@ionic-native/file-path";
     LivroEditPage
   ],
   imports: [
+    FroalaEditorModule.forRoot(),
+    FroalaViewModule.forRoot(),
     BrowserModule,
     IonicModule.forRoot(MyApp)
   ],

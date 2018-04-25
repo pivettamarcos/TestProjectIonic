@@ -13,24 +13,36 @@
         <img style="max-height: 200px; width:auto" [src]="domSanitizationService.bypassSecurityTrustUrl(livro.capa)"/>
       </ion-row>
 
-      <ion-row justify-content-center padding>
-        <button ion-button
-                icon-only
-                width="120"
-                height="180"
-                (click)="onMudarCapa()"
-        >
-          <ion-icon name="camera"></ion-icon>
-        </button>
 
-          <button ion-button
-                  [color]="corIconeLivro"
+      <ion-row justify-content-center padding>
+          <button
+                  ion-button
                   icon-only
                   width="120"
                   height="180"
-                  (click)="escolherPDF()"
+                  (click)="onMudarCapa()"
           >
-            <ion-icon name="document"></ion-icon>
+            <ion-icon name="camera"></ion-icon>
+          </button>
+
+          <button
+            ion-button
+            (click)="onMudarCapaGaleria()"
+            icon-only>
+            <ion-icon name="image"></ion-icon>
+          </button>
+
+          <button ion-button
+                  [outline]="outlineIconeLivro"
+                  icon-only
+                  width="120"
+                  height="180"
+                  color="danger2"
+                  (click)="escolherPDF()"
+                  style="margin-left: 30px;padding-left: 10px"
+          >
+            Arquivo PDF
+            <ion-icon color="danger" name="document"></ion-icon>
           </button>
       </ion-row>
 
