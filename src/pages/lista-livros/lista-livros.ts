@@ -6,7 +6,9 @@ import {LivroPage} from "../livro/livro";
 import {LivroRegisterPage} from '../livro-register/livro-register';
 import {LivroEditPage} from "../livro-edit/livro-edit";
 import {DomSanitizer} from "@angular/platform-browser";
-import { ActionSheetController } from 'ionic-angular'
+import {ActionSheetController } from 'ionic-angular'
+import { AngularFireDatabase } from 'angularfire2/database';
+
 
 
 @Component({
@@ -16,12 +18,18 @@ import { ActionSheetController } from 'ionic-angular'
 export class ListaLivrosPage {
   livros: Livro[];
 
+
+
   constructor(
+    public af: AngularFireDatabase,
     public navCtrl: NavController,
     public modalCtrl: ModalController,
     private livrosService: LivroService,
     private domSanitizationService: DomSanitizer,
     private actionSheetCtrl: ActionSheetController) {
+
+
+    console.log("fire"+af);
   }
 
   ngOnInit(){

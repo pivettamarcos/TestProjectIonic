@@ -21,6 +21,12 @@ import {FilePath} from "@ionic-native/file-path";
 //EXTERNAL IMPORTS
 import "froala-editor/js/froala_editor.pkgd.min.js";
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+
+
+
 
 //PAGE IMPORTS
 import { LoginPage } from '../pages/login/login';
@@ -36,7 +42,14 @@ import {LivroEditPage} from "../pages/livro-edit/livro-edit";
 import {FormsPage} from "../pages/login/loginForm";
 
 
-
+export const firebaseConfig = {
+  apiKey: "AIzaSyC1vD3B8VDTU33pau6XtbtoSxG1Nr8TXAQ",
+  authDomain: "testappionic-93bec.firebaseapp.com",
+  databaseURL: "https://testappionic-93bec.firebaseio.com",
+  projectId: "testappionic-93bec",
+  storageBucket: "testappionic-93bec.appspot.com",
+  messagingSenderId: "335082067236"
+};
 
 
 @NgModule({
@@ -56,7 +69,10 @@ import {FormsPage} from "../pages/login/loginForm";
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -85,7 +101,8 @@ import {FormsPage} from "../pages/login/loginForm";
     StatusBar,
     SplashScreen,
     FileOpener,
-    FilePath
+    FilePath,
+    AngularFireDatabase
   ]
 })
 export class AppModule {}
