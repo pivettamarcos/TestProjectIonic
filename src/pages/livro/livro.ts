@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import {NavController, NavParams, Platform} from 'ionic-angular';
 import {Livro} from "../../data/livroInterface";
 import {LivroService} from "../../services/livros";
 import { DomSanitizer } from '@angular/platform-browser';
 import {LivroEditPage} from "../livro-edit/livro-edit";
 import {File} from "@ionic-native/file";
 import {FileOpener} from "@ionic-native/file-opener";
-
-
-
 
 @Component({
   selector: 'page-livro',
@@ -18,6 +15,7 @@ export class LivroPage {
 
   livro: Livro;
   pdfAvailable: boolean;
+  PDF_LINK: string = "https://www.ufcspa.edu.br/ufcspa/ensino/posGraduacao/especializacao/2018/edital-01-2018-bolsas-academicas.pdf";
 
 
   constructor(
@@ -26,7 +24,8 @@ export class LivroPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public file: File,
-    public fileOpener: FileOpener) {
+    public fileOpener: FileOpener,
+    private platform: Platform) {
   }
 
   ionViewDidLoad(){
@@ -43,13 +42,21 @@ export class LivroPage {
 
   onVerPDF(){
 
-    //SÓ FUNCIONA NO ANDROID
-    this.fileOpener.open(this.livro.pdf, 'application/pdf').then(value =>{
-      console.log('File exists and is beeing opened...');
-    }).catch(err =>console.log('error on opening the file ->' + err));
+    if(this.platform.is('android')){
+      //SÓ FUNCIONA NO ANDROID
 
-    //SÓ FUNCIONA NO IOS
-    //TODO
+      this.fileOpener.open(this.livro.pdf, 'application/pdf').then(value =>{
+        console.log('File exists and is beeing opened...');
+      }).catch(err =>console.log('error on opening the file ->' + err));
+    }
+
+    //NÃO É POSSÍVEL TESTAR POIS PRECISA DO APP RODANDO NATIVO
+    if(this.platform.is('ios')) {
+      //SÓ FUNCIONA NO IOS
+      this.fileOpener.open(this.livro.pdf, 'application/pdf').then(value =>{
+        console.log('File exists and is beeing opened...');
+      }).catch(err =>console.log('error on opening the file ->' + err));
+    }
   }
 
 

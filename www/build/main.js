@@ -483,13 +483,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var LivroPage = /** @class */ (function () {
-    function LivroPage(domSanitizationService, livrosService, navCtrl, navParams, file, fileOpener) {
+    function LivroPage(domSanitizationService, livrosService, navCtrl, navParams, file, fileOpener, platform) {
         this.domSanitizationService = domSanitizationService;
         this.livrosService = livrosService;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.file = file;
         this.fileOpener = fileOpener;
+        this.platform = platform;
+        this.PDF_LINK = "https://www.ufcspa.edu.br/ufcspa/ensino/posGraduacao/especializacao/2018/edital-01-2018-bolsas-academicas.pdf";
     }
     LivroPage.prototype.ionViewDidLoad = function () {
         if (this.livro.pdf === "" || this.livro.pdf === null)
@@ -501,12 +503,18 @@ var LivroPage = /** @class */ (function () {
         this.livro = this.navParams.get('livro');
     };
     LivroPage.prototype.onVerPDF = function () {
-        //SÓ FUNCIONA NO ANDROID
-        this.fileOpener.open(this.livro.pdf, 'application/pdf').then(function (value) {
-            console.log('File exists and is beeing opened...');
-        }).catch(function (err) { return console.log('error on opening the file ->' + err); });
-        //SÓ FUNCIONA NO IOS
-        //TODO
+        if (this.platform.is('ios')) {
+            //SÓ FUNCIONA NO ANDROID
+            this.fileOpener.open(this.livro.pdf, 'application/pdf').then(function (value) {
+                console.log('File exists and is beeing opened...');
+            }).catch(function (err) { return console.log('error on opening the file ->' + err); });
+        }
+        if (this.platform.is('android')) {
+            //SÓ FUNCIONA NO IOS
+            this.fileOpener.open(this.PDF_LINK, 'application/pdf').then(function (value) {
+                console.log('File exists and is beeing opened...');
+            }).catch(function (err) { return console.log('error on opening the file ->' + err); });
+        }
     };
     LivroPage.prototype.deleteLivro = function (id) {
         console.log(id + "vddd");
@@ -528,7 +536,8 @@ var LivroPage = /** @class */ (function () {
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_5__ionic_native_file__["a" /* File */],
-            __WEBPACK_IMPORTED_MODULE_6__ionic_native_file_opener__["a" /* FileOpener */]])
+            __WEBPACK_IMPORTED_MODULE_6__ionic_native_file_opener__["a" /* FileOpener */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* Platform */]])
     ], LivroPage);
     return LivroPage;
 }());
