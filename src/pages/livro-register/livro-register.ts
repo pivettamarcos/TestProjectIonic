@@ -113,7 +113,7 @@ export class LivroRegisterPage {
         this.filePath.resolveNativePath(uri).then(resolvedFilePath =>{
           console.log('Real Path: '+ resolvedFilePath);
           this.pdfAtual = resolvedFilePath;
-          this.btnPDFcolor = "verdeOK"
+          this.btnPDFcolor = "verdeOK";
         });
       })
       .catch(e => console.log(e));
