@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import {NavController, NavParams, Platform} from 'ionic-angular';
 import {Livro} from "../../data/livroInterface";
-import {LivroService} from "../../services/livros";
 import { DomSanitizer } from '@angular/platform-browser';
 import {LivroEditPage} from "../livro-edit/livro-edit";
 import {File} from "@ionic-native/file";
 import {FileOpener} from "@ionic-native/file-opener";
+import {InAppBrowser} from "@ionic-native/in-app-browser";
+import {LivroServiceFirebase} from "../../services/livros";
 
 @Component({
   selector: 'page-livro',
@@ -15,17 +16,19 @@ export class LivroPage {
 
   livro: Livro;
   pdfAvailable: boolean;
-  PDF_LINK: string = "https://www.ufcspa.edu.br/ufcspa/ensino/posGraduacao/especializacao/2018/edital-01-2018-bolsas-academicas.pdf";
+  CAPA_DEFAULT: string = "https://cor-cdn-static.bibliocommons.com/assets/default_covers/icon-book-93409e4decdf10c55296c91a97ac2653.png";
+
 
 
   constructor(
     public domSanitizationService: DomSanitizer,
-    public livrosService: LivroService,
+    public livrosService: LivroServiceFirebase,
     public navCtrl: NavController,
     public navParams: NavParams,
     public file: File,
     public fileOpener: FileOpener,
-    private platform: Platform) {
+    private platform: Platform,
+    private inAppBrowser: InAppBrowser) {
   }
 
   ionViewDidLoad(){
@@ -33,6 +36,10 @@ export class LivroPage {
       this.pdfAvailable = true;
     else
       this.pdfAvailable = false;
+
+    if(this.livro.capa ==="" || this.livro.capa === null){
+      this.livro.capa = this.CAPA_DEFAULT;
+    }
 
   }
 
@@ -42,27 +49,13 @@ export class LivroPage {
 
   onVerPDF(){
 
-    if(this.platform.is('android')){
-      //SÓ FUNCIONA NO ANDROID
+    const browser = this.inAppBrowser.create(this.livro.pdf,'_system');
 
-      this.fileOpener.open(this.livro.pdf, 'application/pdf').then(value =>{
-        console.log('File exists and is beeing opened...');
-      }).catch(err =>console.log('error on opening the file ->' + err));
-    }
-
-    //NÃO É POSSÍVEL TESTAR POIS PRECISA DO APP RODANDO NATIVO
-    if(this.platform.is('ios')) {
-      //SÓ FUNCIONA NO IOS
-      this.fileOpener.open(this.livro.pdf, 'application/pdf').then(value =>{
-        console.log('File exists and is beeing opened...');
-      }).catch(err =>console.log('error on opening the file ->' + err));
-    }
   }
 
 
-  deleteLivro(id:number){
-    console.log(id + "vddd");
-    this.livrosService.deleteLivro(id);
+  deleteLivro(livro: Livro){
+    this.livrosService.deleteLivro(livro);
     this.navCtrl.pop();
   }
 
@@ -73,5 +66,12 @@ export class LivroPage {
 
   sanitizeBase64(capa: string) {
     this.domSanitizationService.bypassSecurityTrustUrl(capa);
+  }
+
+  validaCapa(capa: string) {
+    if(!capa)
+      return this.CAPA_DEFAULT;
+    else
+      return capa;
   }
 }

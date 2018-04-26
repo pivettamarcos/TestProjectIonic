@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import {Livro} from "../../data/livroInterface";
 import {NavParams, ViewController} from "ionic-angular";
 import {NgForm} from "@angular/forms";
-import {LivroService} from "../../services/livros";
+import {LivroServiceFirebase} from "../../services/livros";
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -20,13 +19,14 @@ import {FilePath} from "@ionic-native/file-path";
 })
 export class LivroEditPage {
 
-  livro: Livro;
+  livro: any;
   outlineIconeLivro: boolean;
+  CAPA_DEFAULT: string = "https://cor-cdn-static.bibliocommons.com/assets/default_covers/icon-book-93409e4decdf10c55296c91a97ac2653.png";
 
   constructor(
     private domSanitizationService: DomSanitizer ,
     private navParams: NavParams,
-    private livroService: LivroService,
+    private livroService: LivroServiceFirebase,
     private camera: Camera,
     private viewCtrl: ViewController,
     public file: File,
@@ -52,7 +52,7 @@ export class LivroEditPage {
   ionViewDidLoad(){
     this.livro = this.navParams.get('livro');
 
-    if(this.livro.pdf === "" || this.livro.pdf === null)
+    if(!this.livro.pdf)
       this.outlineIconeLivro = true;
     else
       this.outlineIconeLivro = false;
@@ -77,7 +77,7 @@ export class LivroEditPage {
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE
-    }
+    };
 
     this.camera.getPicture(options).then((imageData) => {
       let base64Image = 'data:image/jpeg;base64,' + imageData;
@@ -118,6 +118,13 @@ export class LivroEditPage {
 
   sanitizeBase64(capa: string) {
     this.domSanitizationService.bypassSecurityTrustUrl(capa);
+  }
+
+  validaCapa(capa: string) {
+    if(!capa)
+      return this.CAPA_DEFAULT;
+    else
+      return capa;
   }
 
 }

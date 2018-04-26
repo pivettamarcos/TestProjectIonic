@@ -1,41 +1,43 @@
 
 import {Livro} from "../data/livroInterface";
-import livros from '../data/livros';
+import {Injectable} from "@angular/core";
+import {AngularFireDatabase} from "angularfire2/database";
 
+@Injectable()
+export class LivroServiceFirebase{
 
-export class LivroService{
-  private livros: Livro[] = livros;
+  private livroRef = this.db.list('livros');
+  public livros: Livro[];
 
-  getLivro(id: number){
-    return this.livros.find((livroEl: Livro) => {
-      return livroEl.id == id;
-    });
+  constructor(private db: AngularFireDatabase) { }
+
+  getLivro(id: string) {
+    let livro =  this.db.database.ref('/'+id);
+    return livro;
   }
 
-  getAllLivros(){return this.livros};
-
-  addLivro(livro: Livro){
-
-    livros.push(livro);
-
+  getAllLivros(){
+    return this.livroRef;
   }
 
-  deleteLivro(id){
-      for(var i = 0; i < this.livros.length; i++){
-         if(this.livros[i].id == id)
-            this.livros.splice(i,1);
-      }
+  addLivro(livro: Livro) {
+    livro.key = this.livroRef.push(null).key;
+    console.log("ADICIONANDO - >"+livro.key);
+    this.livroRef.update('/'+livro.key,livro);
   }
 
-  getProximoId(){
-
-    return livros[livros.length-1].id+1;
+    deleteLivro(livro: Livro){
+    console.log("EXCLUINDO - >"+livro.key);
+    let updates = {};
+    updates['/livros/' + livro.key] = null;
+    this.db.database.ref().update(updates);
   }
 
   atualizarLivro(livroEditado: Livro){
-    let livroAntigo = this.getLivro(livroEditado.id);
-    let index = this.livros.indexOf(livroAntigo);
-    this.livros[index] = livroEditado;
+    console.log("EDITANDO - >"+livroEditado.key);
+    let updates = {};
+    updates['/livros/' + livroEditado.key] = livroEditado;
+    this.db.database.ref().update(updates);
   }
 
 }

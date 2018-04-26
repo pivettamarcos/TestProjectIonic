@@ -18,6 +18,7 @@ import {StatusBar} from "@ionic-native/status-bar";
 import {SplashScreen} from "@ionic-native/splash-screen";
 import {FilePath} from "@ionic-native/file-path";
 
+
 //EXTERNAL IMPORTS
 import "froala-editor/js/froala_editor.pkgd.min.js";
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
@@ -28,12 +29,18 @@ import {ShopListPage} from "../pages/shopList/shopList";
 import {ShopRegisterPage} from "../pages/shopRegister/shopRegister";
 import {LivroPage} from "../pages/livro/livro";
 import {ListaLivrosPage} from "../pages/lista-livros/lista-livros";
-import {LivroService} from "../services/livros";
+import {LivroServiceFirebase} from "../services/livros";
 import {TabsPage} from "../pages/tabs/tabs";
 import {ShopService} from "../services/shops";
 import {LivroRegisterPage} from "../pages/livro-register/livro-register";
 import {LivroEditPage} from "../pages/livro-edit/livro-edit";
 import {FormsPage} from "../pages/login/loginForm";
+
+//DATABASE IMPORTS
+import {AngularFireModule} from "angularfire2";
+import {AngularFireDatabaseModule} from "angularfire2/database";
+import {FIREBASE_CONFIG} from "./firebase.credentials";
+import {InAppBrowser} from "@ionic-native/in-app-browser";
 
 
 
@@ -56,7 +63,9 @@ import {FormsPage} from "../pages/login/loginForm";
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(FIREBASE_CONFIG),
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -74,7 +83,7 @@ import {FormsPage} from "../pages/login/loginForm";
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Camera,
-    LivroService,
+    LivroServiceFirebase,
     ShopService,
     FileChooser,
     DatePicker,
@@ -85,7 +94,8 @@ import {FormsPage} from "../pages/login/loginForm";
     StatusBar,
     SplashScreen,
     FileOpener,
-    FilePath
+    FilePath,
+    InAppBrowser
   ]
 })
 export class AppModule {}

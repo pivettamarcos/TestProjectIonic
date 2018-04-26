@@ -28,18 +28,18 @@
 
   <ion-list>
     <ion-item
-      *ngFor="let livro of livros">
+      *ngFor="let livro of livros$ | async">
 
       <ion-thumbnail
         item-start
-        (click)="onVerMais(livro.id)">
-        <img [src]="domSanitizationService.bypassSecurityTrustUrl(livro.capa)">
+        (click)="onVerMais(livro)">
+        <img [src]="validaCapa(livro.capa)">
       </ion-thumbnail>
 
-      <h2 (click)="onVerMais(livro.id)"> {{livro.titulo}}</h2>
-      <p (click)="onVerMais(livro.id)">{{livro.autor}}</p>
+      <h2 (click)="onVerMais(livro)"> {{livro.titulo}}</h2>
+      <p (click)="onVerMais(livro)">{{livro.autor}}</p>
 
-      <button ion-button clear item-end icon-only (click)="mostrarOpcoes(livro.id)">
+      <button ion-button clear item-end icon-only (click)="mostrarOpcoes(livro)">
         <ion-icon name="more"></ion-icon>
       </button>
 

@@ -22,7 +22,7 @@
       <ion-row justify-content-center padding>
         <img
           style="max-height: 200px; width:auto"
-          src="{{this.capaAtual}}"/>
+          [src]="validaCapa(this.capaAtual)"/>
       </ion-row>
       <ion-row justify-content-center>
         <button
