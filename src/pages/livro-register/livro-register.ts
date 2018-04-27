@@ -6,6 +6,13 @@ import {Camera, CameraOptions} from "@ionic-native/camera";
 import { DatePicker } from '@ionic-native/date-picker';
 import {FileChooser} from "@ionic-native/file-chooser";
 import {FilePath} from "@ionic-native/file-path";
+import { Base64 } from '@ionic-native/base64';
+
+
+import { AngularFireStorage } from 'angularfire2/storage';
+
+import * as firebase from 'firebase';
+
 
 
 @Component({
@@ -20,13 +27,16 @@ export class LivroRegisterPage {
     private viewCtrl: ViewController,
     private livroService: LivroServiceFirebase,
     private fileChooser: FileChooser,
-    private filePath: FilePath){}
+    private filePath: FilePath,
+    private base64: Base64){}
 
   livro: Livro;
   capaAtual: string = "";
   CAPA_DEFAULT: string = "https://cor-cdn-static.bibliocommons.com/assets/default_covers/icon-book-93409e4decdf10c55296c91a97ac2653.png";
   pdfAtual: string = "";
   btnPDFcolor: string;
+  capaTemp: Blob;
+  pdfTemp: Blob;
 
 
   ngOnInit(){
@@ -40,7 +50,7 @@ export class LivroRegisterPage {
     // }
 
 
-    this.livroService.addLivro({key: '', capa: this.capaAtual, titulo: livro.titulo, autor: livro.autor, dtLancamento: livro.dtLancamento, pdf: this.pdfAtual});
+    this.livroService.addLivro({key: '', capa: this.capaAtual, titulo: livro.titulo, autor: livro.autor, dtLancamento: livro.dtLancamento, pdf: this.pdfAtual}, this.capaTemp, this.pdfTemp);
 
     console.log(this.livroService.getAllLivros());
     this.viewCtrl.dismiss();
@@ -71,7 +81,9 @@ export class LivroRegisterPage {
 
     this.camera.getPicture(options).then((imageData) => {
       let base64Image = 'data:image/jpeg;base64,' + imageData;
-      this.mudarImagemCapa(base64Image);
+      let selectedPhoto  = this.dataURItoBlob(base64Image,false);
+      //this.livro.capa = base64Image;
+      this.capaTemp = selectedPhoto;
 
     }, (err) => {
       // Handle error
@@ -93,7 +105,9 @@ export class LivroRegisterPage {
 
     this.camera.getPicture(options).then((imageData) => {
       let base64Image = 'data:image/jpeg;base64,' + imageData;
-      this.mudarImagemCapa(base64Image);
+      let selectedPhoto  = this.dataURItoBlob(base64Image,false);
+      //this.livro.capa = base64Image;
+      this.capaTemp = selectedPhoto;
 
     }, (err) => {
       // Handle error
@@ -111,9 +125,12 @@ export class LivroRegisterPage {
       .then(uri => {
         console.log('Relative Path: '+ uri);
         this.filePath.resolveNativePath(uri).then(resolvedFilePath =>{
-          console.log('Real Path: '+ resolvedFilePath);
-          this.pdfAtual = resolvedFilePath;
-          this.btnPDFcolor = "verdeOK";
+          this.base64.encodeFile(resolvedFilePath).then((base64File: string) => {
+            this.pdfTemp = this.dataURItoBlob(base64File, true);
+            this.pdfAtual = 'data:application/pdf;base64,'+base64File;
+          }, (err) => {
+            console.log(err);
+          });
         });
       })
       .catch(e => console.log(e));
@@ -125,4 +142,17 @@ export class LivroRegisterPage {
     else
       return capa;
   }
+
+  dataURItoBlob(dataURI, pdf) {
+    // code adapted from: http://stackoverflow.com/questions/33486352/cant-upload-image-to-aws-s3-from-ionic-camera
+    let binary = atob(dataURI.split(',')[1]);
+    let array = [];
+    for (let i = 0; i < binary.length; i++) {
+      array.push(binary.charCodeAt(i));
+    }
+    if(!pdf)
+      return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
+    else
+      return new Blob([new Uint8Array(array)], {type: 'application/pdf'});
+  };
 }

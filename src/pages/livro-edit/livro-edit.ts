@@ -7,9 +7,11 @@ import { FileChooser } from '@ionic-native/file-chooser';
 import { DomSanitizer } from '@angular/platform-browser';
 import {File} from "@ionic-native/file";
 import {FilePath} from "@ionic-native/file-path";
+import { Base64 } from '@ionic-native/base64';
 
+import { AngularFireStorage } from 'angularfire2/storage';
 
-
+import * as firebase from 'firebase';
 
 
 
@@ -31,7 +33,9 @@ export class LivroEditPage {
     private viewCtrl: ViewController,
     public file: File,
     public fileChooser: FileChooser,
-    public filePath: FilePath
+    public filePath: FilePath,
+    private storage: AngularFireStorage,
+    private base64: Base64
 
   ) {}
 
@@ -40,9 +44,13 @@ export class LivroEditPage {
       .then(uri => {
         console.log('Relative Path: '+ uri);
         this.filePath.resolveNativePath(uri).then(resolvedFilePath =>{
-          console.log('Real Path: '+ resolvedFilePath);
-          this.livro.pdf = resolvedFilePath;
-          this.outlineIconeLivro = false;
+          this.base64.encodeFile(resolvedFilePath).then((base64File: string) => {
+            let selectedPDF = this.dataURItoBlob(base64File, true);
+            this.uploadToDB(selectedPDF, true);
+            this.outlineIconeLivro = true;
+          }, (err) => {
+            console.log(err);
+          });
         });
       })
       .catch(e => console.log(e));
@@ -81,6 +89,8 @@ export class LivroEditPage {
 
     this.camera.getPicture(options).then((imageData) => {
       let base64Image = 'data:image/jpeg;base64,' + imageData;
+      let selectedPhoto  = this.dataURItoBlob(base64Image, false);
+      this.uploadToDB(selectedPhoto, false);
       this.mudarImagemCapa(base64Image);
 
 
@@ -103,6 +113,8 @@ export class LivroEditPage {
 
     this.camera.getPicture(options).then((imageData) => {
       let base64Image = 'data:image/jpeg;base64,' + imageData;
+      let selectedPhoto  = this.dataURItoBlob(base64Image, false);
+      this.uploadToDB(selectedPhoto, false);
       this.mudarImagemCapa(base64Image);
 
     }, (err) => {
@@ -125,6 +137,43 @@ export class LivroEditPage {
       return this.CAPA_DEFAULT;
     else
       return capa;
+  }
+
+  dataURItoBlob(dataURI, pdf) {
+    // code adapted from: http://stackoverflow.com/questions/33486352/cant-upload-image-to-aws-s3-from-ionic-camera
+    let binary = atob(dataURI.split(',')[1]);
+    let array = [];
+    for (let i = 0; i < binary.length; i++) {
+      array.push(binary.charCodeAt(i));
+    }
+
+    if(!pdf)
+      return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
+    else
+      return new Blob([new Uint8Array(array)], {type: 'application/pdf'});
+
+  };
+
+  uploadToDB(selectedFile, pdf) {
+    if (selectedFile) {
+      let self = this;
+
+      if(!pdf)
+        var uploadTask = firebase.storage().ref().child('/'+this.livro.key.toString()+'/image').put(selectedFile);
+      else
+        var uploadTask = firebase.storage().ref().child('/'+this.livro.key.toString()+'/pdf').put(selectedFile);
+
+
+      uploadTask.then(
+        function(snapshot) {
+          if(!pdf)
+            self.livroService.atualizarAtributo('capa', self.livro.key, snapshot.downloadURL)
+          else
+            self.livroService.atualizarAtributo('pdf',self.livro.key, snapshot.downloadURL)
+      }, function() {
+          console.log("erro")
+      });
+    }
   }
 
 }

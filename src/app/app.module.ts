@@ -17,6 +17,8 @@ import {File} from "@ionic-native/file";
 import {StatusBar} from "@ionic-native/status-bar";
 import {SplashScreen} from "@ionic-native/splash-screen";
 import {FilePath} from "@ionic-native/file-path";
+import { Base64 } from '@ionic-native/base64';
+
 
 
 //EXTERNAL IMPORTS
@@ -41,6 +43,8 @@ import {AngularFireModule} from "angularfire2";
 import {AngularFireDatabaseModule} from "angularfire2/database";
 import {FIREBASE_CONFIG} from "./firebase.credentials";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
+import { AngularFireStorageModule } from 'angularfire2/storage';
+
 
 
 
@@ -65,7 +69,8 @@ import {InAppBrowser} from "@ionic-native/in-app-browser";
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    AngularFireStorageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -95,7 +100,8 @@ import {InAppBrowser} from "@ionic-native/in-app-browser";
     SplashScreen,
     FileOpener,
     FilePath,
-    InAppBrowser
+    InAppBrowser,
+    Base64
   ]
 })
 export class AppModule {}
