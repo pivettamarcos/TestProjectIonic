@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import {NavController, NavParams, Platform} from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 import {Livro} from "../../data/livroInterface";
 import { DomSanitizer } from '@angular/platform-browser';
 import {LivroEditPage} from "../livro-edit/livro-edit";
 import {File} from "@ionic-native/file";
-import {FileOpener} from "@ionic-native/file-opener";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
 import {LivroServiceFirebase} from "../../services/livros";
 
@@ -26,8 +25,6 @@ export class LivroPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public file: File,
-    public fileOpener: FileOpener,
-    private platform: Platform,
     private inAppBrowser: InAppBrowser) {
   }
 
@@ -49,7 +46,7 @@ export class LivroPage {
 
   onVerPDF(){
 
-    const browser = this.inAppBrowser.create(this.livro.pdf,'_system');
+    this.inAppBrowser.create(this.livro.pdf,'_system');
 
   }
 

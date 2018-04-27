@@ -7,7 +7,6 @@ import {DomSanitizer} from "@angular/platform-browser";
 import { ActionSheetController } from 'ionic-angular'
 import {LivroServiceFirebase} from "../../services/livros";
 import {Livro} from "../../data/livroInterface";
-import {AngularFireDatabase} from "angularfire2/database";
 import {Observable} from "rxjs/Observable";
 
 
@@ -27,8 +26,7 @@ export class ListaLivrosPage {
     public modalCtrl: ModalController,
     private livrosService: LivroServiceFirebase,
     private domSanitizationService: DomSanitizer,
-    private actionSheetCtrl: ActionSheetController,
-    private db: AngularFireDatabase) {
+    private actionSheetCtrl: ActionSheetController) {
 
     this.livros$ = this.livrosService
       .getAllLivros() //DB LIST

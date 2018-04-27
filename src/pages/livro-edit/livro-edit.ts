@@ -9,8 +9,6 @@ import {File} from "@ionic-native/file";
 import {FilePath} from "@ionic-native/file-path";
 import { Base64 } from '@ionic-native/base64';
 
-import { AngularFireStorage } from 'angularfire2/storage';
-
 import * as firebase from 'firebase';
 
 
@@ -24,6 +22,8 @@ export class LivroEditPage {
   livro: any;
   outlineIconeLivro: boolean;
   CAPA_DEFAULT: string = "https://cor-cdn-static.bibliocommons.com/assets/default_covers/icon-book-93409e4decdf10c55296c91a97ac2653.png";
+  capaAtual: string;
+  pdfAtual: string;
 
   constructor(
     private domSanitizationService: DomSanitizer ,
@@ -34,7 +34,6 @@ export class LivroEditPage {
     public file: File,
     public fileChooser: FileChooser,
     public filePath: FilePath,
-    private storage: AngularFireStorage,
     private base64: Base64
 
   ) {}
@@ -75,6 +74,13 @@ export class LivroEditPage {
     novoLivro.titulo = form.value.titulo;
     novoLivro.autor = form.value.autor;
     novoLivro.dtLancamento = form.value.dtLancamento;
+
+    //DEBUG
+    console.log('this.livro');
+    console.log(this.livro);
+    console.log('novoLivro');
+    console.log(novoLivro);
+
     this.livroService.atualizarLivro(novoLivro);
     this.viewCtrl.dismiss();
   }
@@ -157,19 +163,26 @@ export class LivroEditPage {
   uploadToDB(selectedFile, pdf) {
     if (selectedFile) {
       let self = this;
+      let uploadTask;
+
 
       if(!pdf)
-        var uploadTask = firebase.storage().ref().child('/'+this.livro.key.toString()+'/image').put(selectedFile);
+        uploadTask = firebase.storage().ref().child('/'+this.livro.key.toString()+'/image').put(selectedFile);
       else
-        var uploadTask = firebase.storage().ref().child('/'+this.livro.key.toString()+'/pdf').put(selectedFile);
+        uploadTask = firebase.storage().ref().child('/'+this.livro.key.toString()+'/pdf').put(selectedFile);
 
 
       uploadTask.then(
         function(snapshot) {
-          if(!pdf)
-            self.livroService.atualizarAtributo('capa', self.livro.key, snapshot.downloadURL)
-          else
-            self.livroService.atualizarAtributo('pdf',self.livro.key, snapshot.downloadURL)
+          if(!pdf){
+            self.livroService.atualizarAtributo('capa', self.livro.key, snapshot.downloadURL);
+            self.capaAtual = snapshot.downloadURL;
+          }
+
+          else{
+            self.livroService.atualizarAtributo('pdf',self.livro.key, snapshot.downloadURL);
+            self.pdfAtual = snapshot.downloadURL;
+          }
       }, function() {
           console.log("erro")
       });

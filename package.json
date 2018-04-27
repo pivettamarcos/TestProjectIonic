@@ -24,6 +24,7 @@
     "@angular/http": "5.2.9",
     "@angular/platform-browser": "5.2.9",
     "@angular/platform-browser-dynamic": "5.2.9",
+    "@ionic-native/base64": "^4.7.0",
     "@ionic-native/camera": "^4.7.0",
     "@ionic-native/core": "4.6.0",
     "@ionic-native/date-picker": "^4.7.0",
@@ -72,8 +73,7 @@
     "ionicons": "3.0.0",
     "rxjs": "5.5.8",
     "sw-toolbox": "3.6.0",
-    "zone.js": "0.8.20",
-    "@ionic-native/base64": "latest"
+    "zone.js": "0.8.20"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.8",

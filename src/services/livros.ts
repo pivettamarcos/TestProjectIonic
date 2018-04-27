@@ -55,11 +55,12 @@ export class LivroServiceFirebase{
   uploadToDB(selectedFile, livroKey, pdf) {
     if (selectedFile) {
       let self = this;
+      let uploadTask;
 
       if(!pdf)
-        var uploadTask = firebase.storage().ref().child('/'+livroKey.toString()+'/image').put(selectedFile);
+        uploadTask = firebase.storage().ref().child('/'+livroKey.toString()+'/image').put(selectedFile);
       else
-        var uploadTask = firebase.storage().ref().child('/'+livroKey.toString()+'/pdf').put(selectedFile);
+        uploadTask = firebase.storage().ref().child('/'+livroKey.toString()+'/pdf').put(selectedFile);
 
       uploadTask.then(
         function(snapshot) {
